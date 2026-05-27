@@ -1,0 +1,1171 @@
+/* ================================================================
+   STYLE.CSS — Portfolio Photo Nature
+   ----------------------------------------------------------------
+   Sommaire :
+     1.  Variables & Reset
+     2.  Typographie de base
+     3.  Curseur personnalisé
+     4.  Navigation
+     5.  Hero
+     6.  Sections — éléments communs
+     7.  Galerie & filtres
+     8.  Lightbox
+     9.  À propos
+    10.  Équipement
+    11.  Contact
+    12.  Footer
+    13.  Animations
+    14.  Responsive
+================================================================ */
+
+
+/* ───────────────────────────────────────────────────────────────
+   1. VARIABLES & RESET
+─────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Couleurs — modifiables directement ici */
+  --or:          #c9a84c;
+  --or-pale:     #e8d5a3;
+  --noir:        #0a0a08;
+  --charbon:     #111110;
+  --anthracite:  #1c1c1a;
+  --fumee:       #2a2a27;
+  --creme:       #f0ead8;
+  --blanc:       #faf8f3;
+  --gris:        #6b6b62;
+  --gris-clair:  #9b9b90;
+
+  /* Typographie */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans:  'Raleway', sans-serif;
+
+  /* Courbe d'animation globale */
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition: 0.5s var(--ease);
+
+  /* Largeur maximale du contenu — empêche l'étirement sur ultra-wide */
+  --content-max:  1400px;
+  --content-wide: 1800px;
+
+  /* Gouttières horizontales adaptatives */
+  --gutter: clamp(1.5rem, 5vw, 6rem);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:    var(--noir);
+  color:         var(--creme);
+  font-family:   var(--font-sans);
+  font-weight:   300;
+  letter-spacing: 0.03em;
+  overflow-x:    hidden;
+  cursor:        auto;             /* remplacé par .custom-cursor si activé */
+}
+
+body.custom-cursor {
+  cursor: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   2. TYPOGRAPHIE DE BASE
+─────────────────────────────────────────────────────────────── */
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  font-weight: 300;
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   3. CURSEUR PERSONNALISÉ
+─────────────────────────────────────────────────────────────── */
+
+.cursor {
+  position:   fixed;
+  width:      8px;
+  height:     8px;
+  background: var(--or);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index:    9999;
+  transform:  translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, opacity 0.3s;
+}
+
+.cursor-ring {
+  position:   fixed;
+  width:      36px;
+  height:     36px;
+  border:     1px solid rgba(201, 168, 76, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index:    9998;
+  transform:  translate(-50%, -50%);
+  transition: all 0.12s ease;
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   4. NAVIGATION
+─────────────────────────────────────────────────────────────── */
+
+nav {
+  position:   fixed;
+  top:        0;
+  left:       0;
+  right:      0;
+  z-index:    100;
+  display:    flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:    2rem var(--gutter);
+  transition: background var(--transition), padding var(--transition);
+}
+
+nav.scrolled {
+  background:     rgba(10, 10, 8, 0.92);
+  backdrop-filter: blur(12px);
+  padding:        1.2rem var(--gutter);
+  border-bottom:  1px solid rgba(201, 168, 76, 0.12);
+}
+
+/* Logo */
+.nav-logo {
+  font-family:   var(--font-serif);
+  font-size:     1.4rem;
+  font-weight:   400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:         var(--creme);
+  text-decoration: none;
+}
+
+.nav-logo span {
+  color: var(--or);
+}
+
+/* Liens */
+.nav-links {
+  display:    flex;
+  gap:        3rem;
+  list-style: none;
+}
+
+.nav-links a {
+  position:      relative;
+  font-size:     0.7rem;
+  font-weight:   400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color:         var(--gris-clair);
+  text-decoration: none;
+  transition:    color 0.3s;
+}
+
+.nav-links a::after {
+  content:    '';
+  position:   absolute;
+  bottom:     -4px;
+  left:       0;
+  width:      0;
+  height:     1px;
+  background: var(--or);
+  transition: width 0.3s;
+}
+
+.nav-links a:hover          { color: var(--or-pale); }
+.nav-links a:hover::after   { width: 100%; }
+
+.nav-links a.nav-active          { color: var(--or-pale); }
+.nav-links a.nav-active::after   { width: 100%; background: var(--or); }
+
+/* Hamburger (mobile) */
+.hamburger {
+  display:    none;
+  flex-direction: column;
+  gap:        5px;
+  background: none;
+  border:     none;
+  cursor:     pointer;
+  padding:    4px;
+}
+
+.hamburger span {
+  display:    block;
+  width:      24px;
+  height:     1px;
+  background: var(--creme);
+  transition: var(--transition);
+}
+
+.hamburger.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+
+/* ───────────────────────────────────────────────────────────────
+   5. HERO
+─────────────────────────────────────────────────────────────── */
+
+#hero {
+  position:   relative;
+  height:     100vh;
+  display:    flex;
+  align-items: flex-end;
+  overflow:   hidden;
+}
+
+/* Photo de fond
+   ↓ Remplacez l'URL par votre photo : url(images/hero.jpg) */
+.hero-bg {
+  position:   absolute;
+  inset:      0;
+  transform:  scale(1.05);
+  animation:  heroZoom 20s ease-out forwards;
+  background-image:    url('images/portfolio/dscf6337.jpg');
+  background-size:     cover;
+  background-position: center;
+  background-repeat:   no-repeat;
+}
+
+/* Dégradé sombre par-dessus la photo */
+.hero-bg::after {
+  content:  '';
+  position: absolute;
+  inset:    0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 8, 0.2)  0%,
+    rgba(10, 10, 8, 0.7) 70%,
+    var(--noir)          100%
+  );
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1.05); }
+  to   { transform: scale(1.0);  }
+}
+
+/* Texte du hero */
+.hero-content {
+  position:  relative;
+  z-index:   2;
+  width:     100%;
+  padding:   0 var(--gutter) 6rem;
+  max-width: calc(var(--content-max) + 2 * var(--gutter));
+  opacity:   0;
+  transform: translateY(30px);
+  animation: fadeUp 1.2s 0.6s forwards;
+}
+
+.hero-tag {
+  display:       flex;
+  align-items:   center;
+  gap:           1rem;
+  font-size:     0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color:         var(--or);
+  margin-bottom: 1.5rem;
+}
+
+.hero-tag::before {
+  content:    '';
+  display:    block;
+  width:      40px;
+  height:     1px;
+  background: var(--or);
+}
+
+.hero-title {
+  font-size:     clamp(3.5rem, 7vw, 8rem);
+  line-height:   0.95;
+  letter-spacing: -0.01em;
+  color:         var(--blanc);
+  margin-bottom: 2rem;
+  max-width:     800px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color:      var(--or-pale);
+}
+
+.hero-sub {
+  font-size:     0.8rem;
+  letter-spacing: 0.15em;
+  color:         var(--gris-clair);
+  max-width:     400px;
+  line-height:   1.8;
+}
+
+/* Indicateur de scroll */
+.hero-scroll {
+  position:      absolute;
+  bottom:        3rem;
+  right:         var(--gutter);
+  display:       flex;
+  flex-direction: column;
+  align-items:   center;
+  gap:           0.75rem;
+  color:         var(--gris);
+  font-size:     0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  animation:     fadeUp 1.2s 1.2s both;
+}
+
+.hero-scroll::after {
+  content:    '';
+  display:    block;
+  width:      1px;
+  height:     60px;
+  background: linear-gradient(to bottom, var(--or), transparent);
+  animation:  scrollLine 2s 2s infinite;
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   6. SECTIONS — ÉLÉMENTS COMMUNS
+─────────────────────────────────────────────────────────────── */
+
+section {
+  padding: 7rem var(--gutter);
+}
+
+/* Conteneurs intérieurs centrés pour ultra-wide */
+.section-header,
+.gallery-filters,
+.gallery-grid,
+.gear-grid,
+.contact-inner,
+.about-text {
+  max-width: var(--content-max);
+  margin-left:  auto;
+  margin-right: auto;
+}
+
+/* Galerie et équipement peuvent s'étendre davantage */
+.gallery-grid,
+.gear-grid {
+  max-width: var(--content-wide);
+}
+
+.section-header {
+  display:     flex;
+  align-items: baseline;
+  gap:         1.5rem;
+  margin-bottom: 4rem;
+}
+
+.section-num {
+  font-family:   var(--font-serif);
+  font-size:     0.75rem;
+  color:         var(--or);
+  letter-spacing: 0.1em;
+}
+
+.section-title {
+  font-size:     clamp(2rem, 4vw, 3.5rem);
+  color:         var(--blanc);
+  letter-spacing: 0.02em;
+}
+
+.section-title em {
+  font-style: italic;
+  color:      var(--or-pale);
+}
+
+.section-line {
+  flex:        1;
+  height:      1px;
+  background:  linear-gradient(to right, rgba(201, 168, 76, 0.3), transparent);
+  align-self:  center;
+  margin-left: 1rem;
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   7. GALERIE & FILTRES
+─────────────────────────────────────────────────────────────── */
+
+#galerie {
+  background: var(--charbon);
+}
+
+/* Boutons de filtre */
+.gallery-filters {
+  display:       flex;
+  gap:           0.5rem;
+  margin-bottom: 3rem;
+  flex-wrap:     wrap;
+}
+
+.filter-btn {
+  background:    transparent;
+  border:        1px solid var(--fumee);
+  color:         var(--gris-clair);
+  padding:       0.5rem 1.5rem;
+  font-family:   var(--font-sans);
+  font-size:     0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor:        pointer;
+  transition:    all 0.3s;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background:  var(--or);
+  border-color: var(--or);
+  color:       var(--noir);
+}
+
+/* Grille masonry */
+.gallery-grid {
+  columns:    3;
+  column-gap: 1rem;
+}
+
+.gallery-item {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+  position:    relative;
+  overflow:    hidden;
+  cursor:      pointer;
+}
+
+.gallery-item img {
+  width:      100%;
+  transition: transform 0.7s var(--ease);
+  filter:     brightness(0.9) contrast(1.05);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.04);
+}
+
+/* Overlay au survol */
+.gallery-overlay {
+  position:   absolute;
+  inset:      0;
+  background: linear-gradient(to top, rgba(10, 10, 8, 0.9) 0%, transparent 50%);
+  opacity:    0;
+  transition: opacity 0.4s;
+  display:    flex;
+  align-items: flex-end;
+  padding:    1.5rem;
+}
+
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.gallery-caption {
+  transform:  translateY(8px);
+  transition: transform 0.4s;
+}
+
+.gallery-item:hover .gallery-caption {
+  transform: translateY(0);
+}
+
+.gallery-caption h3 {
+  font-size:   1.1rem;
+  font-weight: 400;
+  color:       var(--blanc);
+}
+
+.gallery-caption p {
+  font-size:     0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color:         var(--or);
+  margin-top:    0.2rem;
+}
+
+/* Photo filtrée masquée — animation fluide */
+.gallery-item {
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease),
+              max-height 0.5s var(--ease), margin-bottom 0.5s var(--ease);
+  max-height: 1200px;
+  overflow:   hidden;
+}
+
+.gallery-item.hidden {
+  opacity:       0;
+  transform:     scale(0.95);
+  max-height:    0;
+  margin-bottom: 0;
+  pointer-events: none;
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   8. LIGHTBOX
+─────────────────────────────────────────────────────────────── */
+
+.lightbox {
+  position:   fixed;
+  inset:      0;
+  background: rgba(0, 0, 0, 0.96);
+  z-index:    1000;
+  display:    flex;
+  align-items: center;
+  justify-content: center;
+  opacity:    0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.lightbox.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.lightbox img {
+  max-width:   90vw;
+  max-height:  90vh;
+  object-fit:  contain;
+  border:      1px solid rgba(201, 168, 76, 0.15);
+}
+
+.lightbox-close {
+  position:    absolute;
+  top:         2rem;
+  right:       2rem;
+  background:  none;
+  border:      none;
+  font-family: var(--font-serif);
+  font-size:   1.5rem;
+  color:       var(--gris-clair);
+  cursor:      pointer;
+  transition:  color 0.3s;
+}
+
+.lightbox-close:hover {
+  color: var(--or);
+}
+
+.lightbox-nav {
+  position:   absolute;
+  top:        50%;
+  transform:  translateY(-50%);
+  background: none;
+  border:     1px solid rgba(201, 168, 76, 0.3);
+  color:      var(--or);
+  width:      44px;
+  height:     44px;
+  display:    flex;
+  align-items: center;
+  justify-content: center;
+  cursor:     pointer;
+  font-size:  1.2rem;
+  transition: all 0.3s;
+}
+
+.lightbox-nav:hover {
+  background: var(--or);
+  color:      var(--noir);
+}
+
+.lightbox-prev { left:  2rem; }
+.lightbox-next { right: 2rem; }
+
+.lightbox-info {
+  position:  absolute;
+  bottom:    2rem;
+  left:      50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.lightbox-info h3 {
+  font-size: 1.3rem;
+  color:     var(--creme);
+}
+
+.lightbox-info p {
+  font-size:     0.65rem;
+  color:         var(--or);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top:    0.3rem;
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   9. À PROPOS
+─────────────────────────────────────────────────────────────── */
+
+#apropos {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   clamp(3rem, 6vw, 8rem);
+  align-items:           center;
+  background:            var(--noir);
+  /* Contrainte ultra-wide appliquée via padding de section */
+  max-width: var(--content-max);
+  margin-left:  auto;
+  margin-right: auto;
+  /* Reset des marges auto héritées des enfants directs de section */
+  width: 100%;
+}
+
+/* Cadre décoratif autour du portrait */
+.about-image-wrap {
+  position: relative;
+}
+
+.about-image-wrap::before {
+  content:  '';
+  position: absolute;
+  top:      -1.5rem;
+  left:     -1.5rem;
+  right:     1.5rem;
+  bottom:    1.5rem;
+  border:    1px solid rgba(201, 168, 76, 0.2);
+  z-index:   0;
+}
+
+.about-image-wrap img {
+  position:    relative;
+  z-index:     1;
+  width:       100%;
+  aspect-ratio: 3 / 4;
+  object-fit:  cover;
+  filter:      sepia(15%) contrast(1.05);
+}
+
+/* Texte */
+.about-text .section-header {
+  margin-bottom: 2rem;
+}
+
+.about-text p {
+  color:         var(--gris-clair);
+  line-height:   1.9;
+  font-size:     0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.about-text p strong {
+  color:       var(--or-pale);
+  font-weight: 400;
+}
+
+/* Statistiques */
+.about-stats {
+  display:               grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:                   2rem;
+  margin-top:            3rem;
+  padding-top:           3rem;
+  border-top:            1px solid var(--fumee);
+}
+
+.stat-val {
+  display:     block;
+  font-family: var(--font-serif);
+  font-size:   2.5rem;
+  font-weight: 300;
+  color:       var(--or);
+}
+
+.stat-label {
+  display:       block;
+  font-size:     0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color:         var(--gris);
+  margin-top:    0.3rem;
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   10. ÉQUIPEMENT
+─────────────────────────────────────────────────────────────── */
+
+#equipement {
+  background: var(--anthracite);
+  padding:    6rem var(--gutter);
+}
+
+.gear-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:                   1px;
+  background:            var(--fumee);
+  border:                1px solid var(--fumee);
+  /* Contrainte ultra-wide : la grille ne dépasse jamais la largeur du contenu */
+  max-width:             var(--content-max);
+  margin-left:           auto;
+  margin-right:          auto;
+  width:                 100%;
+}
+
+.gear-item {
+  background:  var(--anthracite);
+  padding:     2.5rem;
+  transition:  background 0.3s;
+}
+
+.gear-item:hover {
+  background: var(--fumee);
+}
+
+.gear-icon {
+  display:       block;
+  font-size:     1.5rem;
+  margin-bottom: 1rem;
+}
+
+.gear-cat {
+  display:       block;
+  font-size:     0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color:         var(--or);
+  margin-bottom: 0.5rem;
+}
+
+.gear-name {
+  font-family:   var(--font-serif);
+  font-size:     1.1rem;
+  color:         var(--blanc);
+  margin-bottom: 0.5rem;
+}
+
+.gear-desc {
+  font-size:   0.75rem;
+  color:       var(--gris);
+  line-height: 1.7;
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   11. CONTACT
+─────────────────────────────────────────────────────────────── */
+
+#contact {
+  background:  var(--charbon);
+  text-align:  center;
+}
+
+.contact-inner {
+  max-width: 600px;
+  margin:    0 auto;
+}
+
+/* Centrage de l'en-tête dans la section Contact */
+#contact .section-header {
+  justify-content: center;
+  flex-direction:  column;
+  align-items:     center;
+}
+
+.contact-tagline {
+  font-size:     clamp(1.8rem, 4vw, 3rem);
+  font-weight:   300;
+  font-style:    italic;
+  color:         var(--or-pale);
+  margin-bottom: 1.5rem;
+  line-height:   1.3;
+}
+
+.contact-text {
+  font-size:     0.8rem;
+  color:         var(--gris-clair);
+  line-height:   1.9;
+  margin-bottom: 3rem;
+}
+
+.contact-links {
+  display:        flex;
+  gap:            1rem;
+  justify-content: center;
+  flex-wrap:      wrap;
+}
+
+/* Boutons */
+.btn {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            0.6rem;
+  padding:        0.9rem 2.5rem;
+  font-family:    var(--font-sans);
+  font-size:      0.65rem;
+  font-weight:    400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:     all 0.3s;
+  cursor:         pointer;
+  border:         none;
+}
+
+.btn-primary {
+  background: var(--or);
+  color:      var(--noir);
+}
+
+.btn-primary:hover {
+  background: var(--or-pale);
+  transform:  translateY(-2px);
+}
+
+.btn-outline {
+  background:  transparent;
+  border:      1px solid var(--fumee);
+  color:       var(--gris-clair);
+}
+
+.btn-outline:hover {
+  border-color: var(--or);
+  color:        var(--or);
+}
+
+/* Réseaux sociaux */
+.social-links {
+  display:        flex;
+  gap:            2rem;
+  justify-content: center;
+  flex-wrap:      wrap;
+  margin-top:     4rem;
+  padding-top:    3rem;
+  border-top:     1px solid var(--fumee);
+}
+
+.social-links a {
+  font-size:     0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color:         var(--gris);
+  text-decoration: none;
+  transition:    color 0.3s;
+}
+
+.social-links a:hover {
+  color: var(--or);
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   12. FOOTER
+─────────────────────────────────────────────────────────────── */
+
+footer {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  padding:         2rem var(--gutter);
+  background:      var(--noir);
+  border-top:      1px solid rgba(201, 168, 76, 0.08);
+}
+
+footer > * {
+  max-width: var(--content-wide);
+}
+
+footer p {
+  font-size:     0.65rem;
+  color:         var(--gris);
+  letter-spacing: 0.12em;
+}
+
+footer span {
+  color: var(--or);
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   13. ANIMATIONS
+─────────────────────────────────────────────────────────────── */
+
+@keyframes fadeUp {
+  to {
+    opacity:   1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scrollLine {
+  0%   { transform: scaleY(1); transform-origin: top;    opacity: 1; }
+  50%  { transform: scaleY(0); transform-origin: top;    opacity: 0; }
+  51%  { transform: scaleY(0); transform-origin: bottom;             }
+  100% { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+}
+
+/* Révélation au scroll */
+.reveal {
+  opacity:    0;
+  transform:  translateY(25px);
+  transition: opacity 0.8s, transform 0.8s;
+}
+
+.reveal.visible {
+  opacity:   1;
+  transform: translateY(0);
+}
+
+/* Désactiver les animations : ajouter la classe .no-reveal sur <body> */
+.no-reveal .reveal {
+  opacity:    1;
+  transform:  none;
+  transition: none;
+}
+
+
+/* ───────────────────────────────────────────────────────────────
+   14. RESPONSIVE
+─────────────────────────────────────────────────────────────── */
+
+/* ───────────────────────────────────────────────────────────────
+   14. RESPONSIVE
+   Breakpoints :
+     ≥ 1800px  Ultra-wide (>27")
+     ≥ 1400px  Large desktop
+       < 1200px  Tablette large / petit desktop
+       <  900px  Tablette portrait / mobile large
+       <  600px  Mobile standard
+       <  480px  Petit mobile
+─────────────────────────────────────────────────────────────── */
+
+/* ── Ultra-wide ≥ 1800px ─────────────────────────────────────── */
+@media (min-width: 1800px) {
+
+  /* Galerie : 4 colonnes sur très grand écran */
+  .gallery-grid {
+    columns:    4;
+    column-gap: 1.2rem;
+  }
+
+  /* Hero : titre encore plus grand */
+  .hero-title {
+    max-width: 900px;
+  }
+}
+
+/* ── Large desktop ≥ 1400px ──────────────────────────────────── */
+@media (min-width: 1400px) {
+  nav {
+    /* Centrage du contenu de la nav sur ultra-wide */
+    padding-left:  max(var(--gutter), calc((100vw - var(--content-wide)) / 2));
+    padding-right: max(var(--gutter), calc((100vw - var(--content-wide)) / 2));
+  }
+
+  nav.scrolled {
+    padding-left:  max(var(--gutter), calc((100vw - var(--content-wide)) / 2));
+    padding-right: max(var(--gutter), calc((100vw - var(--content-wide)) / 2));
+  }
+}
+
+/* ── Tablette large / petit desktop < 1200px ─────────────────── */
+@media (max-width: 1200px) {
+
+  /* Galerie : 2 colonnes */
+  .gallery-grid {
+    columns:    2;
+    column-gap: 0.8rem;
+  }
+}
+
+/* ── Tablette portrait / mobile large < 900px ────────────────── */
+@media (max-width: 900px) {
+
+  /* Navigation */
+  nav         { padding: 1.5rem 1.5rem; }
+  nav.scrolled { padding: 1rem 1.5rem; }
+
+  .nav-links {
+    display:        none;
+    position:       fixed;
+    inset:          0;
+    top:            70px;
+    background:     rgba(10, 10, 8, 0.98);
+    flex-direction: column;
+    align-items:    center;
+    justify-content: center;
+    gap:            3rem;
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-links.open { display: flex; }
+  .nav-links a    { font-size: 1rem; letter-spacing: 0.25em; }
+  .hamburger      { display: flex; }
+
+  /* Sections */
+  section { padding: 5rem 1.5rem; }
+
+  /* Hero */
+  .hero-content { padding: 0 1.5rem 5rem; }
+  .hero-scroll  { right: 1.5rem; bottom: 2rem; }
+
+  /* Hero : masquer l'indicateur scroll sur mobile pour gagner de l'espace */
+  .hero-sub { max-width: 100%; }
+
+  /* Galerie : 2 colonnes sur tablette */
+  .gallery-grid {
+    columns:    2;
+    column-gap: 0.8rem;
+  }
+
+  /* À propos : empilement vertical */
+  #apropos {
+    grid-template-columns: 1fr;
+    gap:     3rem;
+    padding: 5rem 1.5rem;
+  }
+
+  /* Portrait portrait : ratio moins haut sur tablette */
+  .about-image-wrap img {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* Équipement */
+  #equipement { padding: 5rem 1.5rem; }
+
+  /* Stats : 3 colonnes -> 2 colonnes */
+  .about-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Footer */
+  footer {
+    flex-direction: column;
+    gap:       0.8rem;
+    padding:   1.5rem 1.5rem;
+    text-align: center;
+  }
+}
+
+/* ── Mobile standard < 600px ─────────────────────────────────── */
+@media (max-width: 600px) {
+
+  /* Galerie : 1 colonne sur petit mobile */
+  .gallery-grid {
+    columns:    1;
+    column-gap: 0;
+  }
+
+  /* Hero : réduire le padding bas */
+  .hero-content {
+    padding-bottom: 4rem;
+  }
+
+  /* Hero scroll masqué sur petit écran */
+  .hero-scroll {
+    display: none;
+  }
+
+  /* Section header : empiler le numéro et le titre */
+  .section-header {
+    flex-wrap: wrap;
+    gap:       0.75rem;
+  }
+
+  .section-line {
+    display: none;
+  }
+
+  /* About stats : empilées */
+  .about-stats {
+    grid-template-columns: 1fr 1fr;
+    gap:                   1.5rem;
+  }
+
+  /* Stat val : taille réduite */
+  .stat-val {
+    font-size: 1.8rem;
+  }
+
+  /* Boutons contact : pleine largeur */
+  .contact-links {
+    flex-direction: column;
+    align-items:    stretch;
+  }
+
+  .btn {
+    justify-content: center;
+    padding: 1rem 2rem;
+  }
+
+  /* Lightbox navigation : repositionner sur petit écran */
+  .lightbox-prev { left:  0.75rem; }
+  .lightbox-next { right: 0.75rem; }
+
+  .lightbox img {
+    max-width: 100vw;
+    max-height: 80vh;
+  }
+}
+
+/* ── Petit mobile < 480px ────────────────────────────────────── */
+@media (max-width: 480px) {
+
+  /* Nav : encore plus compact */
+  nav { padding: 1rem 1rem; }
+  nav.scrolled { padding: 0.8rem 1rem; }
+
+  /* Hero title : taille min assurée */
+  .hero-title {
+    font-size: clamp(2.8rem, 12vw, 4.5rem);
+  }
+
+  /* Sections */
+  section { padding: 4rem 1rem; }
+  #equipement { padding: 4rem 1rem; }
+
+  /* About */
+  #apropos { padding: 4rem 1rem; }
+
+  /* Stats : 1 colonne */
+  .about-stats {
+    grid-template-columns: 1fr;
+    gap:                   1.5rem;
+  }
+
+  /* Gear : 1 colonne explicite */
+  .gear-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer */
+  footer {
+    padding: 1.2rem 1rem;
+  }
+}
+
+/* ── Accessibilité : respecter les préférences de mouvement ──── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:   0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration:  0.01ms !important;
+  }
+
+  .reveal {
+    opacity:   1;
+    transform: none;
+  }
+}

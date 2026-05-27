@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Berry Nice — Photographie Animalière & Urbaine</title>
+  <meta name="description" content="Portfolio de photographie animalière et urbaine basé dans le Berry. Capturer l'essence du silence et des moments spontanés dans la nature et la ville." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CURSEUR PERSONNALISÉ
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="cursor"      id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       NAVIGATION
+  ═══════════════════════════════════════════════════════════ -->
+  <nav id="navbar">
+
+    <a href="#" class="nav-logo">Berry<span>.</span>Nice</a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#galerie">Galerie</a></li>
+      <li><a href="#apropos">À propos</a></li>
+      <li><a href="#equipement">Équipement</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       HERO
+       ─ Photo de fond : modifiable dans style.css, section "5. HERO"
+         Remplacez l'URL par : url('images/hero.jpg')
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="hero">
+
+    <div class="hero-bg"></div>
+
+    <div class="hero-content">
+      <p class="hero-tag">Photographie Animalière & Urbaine — Berry</p>
+      <h1 class="hero-title">
+        L'essence<br>
+        <em>du silence et<br>de l'instant</em>
+      </h1>
+      <p class="hero-sub">
+        Chercher un avant et un après — dans la nature à l'affût,
+        ou dans la rue au fil de l'impulsion.
+      </p>
+    </div>
+
+    <div class="hero-scroll">Défiler</div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       GALERIE
+       ─ data-cat="animalier" ou data-cat="urbain" → sert aux filtres
+       ─ Ajoutez une photo : copiez un bloc <div class="gallery-item">
+       ─ Supprimez une photo : effacez son bloc entier
+       ─ Remplacez les src Unsplash par vos propres chemins : "images/ma-photo.jpg"
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="galerie">
+
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <h2 class="section-title">La <em>Galerie</em></h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="gallery-filters reveal">
+      <button class="filter-btn active" data-filter="all">Tout</button>
+      <button class="filter-btn"        data-filter="animalier">Animalier</button>
+      <button class="filter-btn"        data-filter="route">Sur la route</button>
+       <button class="filter-btn"        data-filter="paysages">Paysages</button>
+    </div>
+
+    <div class="gallery-grid reveal">
+
+      <div class="gallery-item" data-cat="animalier">
+        <img src="images/portfolio/_dsf5564.jpg"
+             alt="Chat curieux" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Chat curieux</h3>
+            <p>Animalier · Jardin communaux</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-cat="paysages">
+        <img src="images/portfolio/_dsf5524.jpg"
+             alt="Aube sur l'étang communal" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Aube dorée</h3>
+            <p>Paysages matinaux · Berry</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-cat="animalier">
+        <img src="images/portfolio/_dsf6623.jpg"
+             alt="Oiseau solitaire" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Petit oiseau solitaire en hiver</h3>
+            <p>Jardin en hiver · Berry</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-cat="animalier">
+        <img src="images/portfolio/_dsf6703.jpg"
+             alt="Mésange à la mangeoire" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Petite mésange vigilante</h3>
+            <p>Animalier · Jardin au printemps</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-cat="Route">
+        <img src="images/portfolio/_dsf5933.jpg"
+             alt="Chateauneuf-sur-cher" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Canal du cher</h3>
+            <p>Route · Chateauneuf-sur-cher</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-cat="animalier">
+        <img src="images/portfolio/_dsf5576.jpg"
+             alt="Vol migratoire" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Ciel d'hiver et migration</h3>
+            <p>Animalier · Berry</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-cat="animalier">
+        <img src="images/portfolio/_dsf5693.jpg"
+             alt="Papillon et romarin" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Papillon et romarin</h3>
+            <p>Animalier · Jardin au Printemps</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-cat="animalier">
+        <img src="images/portfolio/_dsf5622.jpg"
+             alt="Couple de cygne en hiver" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Couple de cygne en hiver</h3>
+            <p>Animalier · Etang communal</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-cat="paysages">
+        <img src="images/portfolio/_dsf5519.jpg"
+             alt="Etang à l'aurore" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Etang à l'aurore</h3>
+            <p>Paysages · Berry</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-cat="paysages">
+        <img src="images/portfolio/_dsf5731.jpg"
+             alt="Landes en fleur" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Etang au petit matin</h3>
+            <p>Paysages · Berry</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-cat="route">
+        <img src="images/portfolio/dscf6349.jpg"
+             alt="Route déserte" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Voyage électrique</h3>
+            <p>Route · Indre</p>
+          </div>
+        </div>
+      </div>
+      
+          <div class="gallery-item" data-cat="route">
+        <img src="images/portfolio/dscf6337.jpg"
+             alt="Route et brouillard" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Voyage d'hiver</h3>
+            <p>Route · Berry</p>
+          </div>
+        </div>
+      </div>
+      <!-- ─ Modèle pour ajouter une photo ─────────────────────────
+      <div class="gallery-item" data-cat="animalier">
+        <img src="images/ma-photo.jpg" alt="Description de la photo" loading="lazy" />
+        <div class="gallery-overlay">
+          <div class="gallery-caption">
+            <h3>Titre de la photo</h3>
+            <p>Animalier · Lieu de prise de vue</p>
+          </div>
+        </div>
+      </div>
+      ──────────────────────────────────────────────────────────── -->
+
+    </div><!-- fin .gallery-grid -->
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       À PROPOS
+       ─ Portrait : remplacez src par "images/portrait.jpg"
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="apropos">
+
+    <div class="about-image-wrap reveal">
+      <img src="https://images.unsplash.com/photo-1765915968433-86d4d13ae1a1?w=800&q=85"
+           alt="Berry Nice, photographe" />
+    </div>
+
+    <div class="about-text">
+
+      <div class="section-header reveal">
+        <span class="section-num">02</span>
+        <h2 class="section-title">À <em>propos</em></h2>
+      </div>
+
+      <p class="reveal">
+        Depuis mes première photographies, je cherche dans mes prises
+        de vue un instant précis où une image capture une sensation durable qui puisse faire naître une émotion qui résonne.
+      </p>
+
+      <p class="reveal">
+        Mon regard se partage entre deux univers complémentaires :
+        la <strong>photographie animalière</strong>, faite de patience
+        et d'observation silencieuse au cœur de la nature, et la
+        <strong>photographie urbaine</strong>, où la recherche d'un instant prime
+        et où chaque ruelle recèle ses propres silences, sa propre histoire.
+      
+      </p>
+
+      <p class="reveal">
+        Basé dans le <strong>Berry</strong>, je travaille au fil d'une lumière qui évolue au fil des saisons, des moments précieux 
+        où se croisent migrations saisonnières, déplacements imprévus ou voyages à travers des paysages en changements constants.
+      </p>
+
+      <div class="about-stats reveal">
+        <div>
+          <span class="stat-val">Envie</span>
+          <span class="stat-label">Une</span>
+        </div>
+        <div>
+          <span class="stat-val">Passion</span>
+          <span class="stat-label">Une</span>
+        </div>
+        <div>
+          <span class="stat-val">Apprendre</span>
+          <span class="stat-label">Toujours</span>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       ÉQUIPEMENT
+       ─ Ajoutez / supprimez des <div class="gear-item"> librement
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="equipement">
+
+    <div class="section-header reveal">
+      <span class="section-num">03</span>
+      <h2 class="section-title">L'<em>Équipement</em></h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="gear-grid reveal">
+
+      <div class="gear-item">
+        <span class="gear-icon">📷</span>
+        <span class="gear-cat">Hybride principal</span>
+        <p class="gear-name">Fujifilm X-T5</p>
+        <p class="gear-desc">40 MP, capteur APS-C — Rendu magnifique malgré un auto-focus qui se perd un peu</p>
+      </div>
+
+      <div class="gear-item">
+        <span class="gear-icon">📱</span>
+        <span class="gear-cat">Toujours dans la poche</span>
+        <p class="gear-name">Google Pixel 8 Pro</p>
+        <p class="gear-desc">Discret, instantané, bluffant en basse lumière — un tout-terrain qui tient dans la poche.</p>
+      </div>
+
+      <div class="gear-item">
+        <span class="gear-icon">👁</span>
+        <span class="gear-cat">Références</span>
+        <p class="gear-name">Todd Hido · Sabine Weiss</p>
+        <p class="gear-desc">On se forme autant devant les maîtres que derrière l'objectif. Deux regards qui ont donné forme au mieux.</p>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CONTACT
+       ─ Remplacez contact@berry-nice.fr par votre vraie adresse
+       ─ Remplacez le lien Instagram par votre URL de profil
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="contact">
+    <div class="contact-inner">
+
+      <div class="section-header reveal">
+        <span class="section-num">04</span>
+        <h2 class="section-title">Me <em>contacter</em></h2>
+      </div>
+
+      <p class="contact-tagline reveal">
+        « Se perdre dans endroits<br>qui invitent à la fiction. »
+      </p>
+
+      <p class="contact-text reveal">
+        Basé dans le Berry — disponible pour des collaborations éditoriales,
+        des projets associatifs ou simplement pour échanger
+        autour de la photographie.
+      </p>
+
+      <div class="contact-links reveal">
+        <a href="mailto:contact@berry-nice.fr" class="btn btn-primary">✉ Envoyer un message</a>
+        <a href="https://instagram.com/berry.nice" target="_blank" rel="noopener" class="btn btn-outline">Instagram</a>
+      </div>
+
+      <div class="social-links reveal">
+        <a href="https://instagram.com/berry.nice" target="_blank" rel="noopener">Instagram</a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════════ -->
+  <footer>
+    <p>© <span id="year"></span> Berry Nice — Tous droits réservés</p>
+    <p>Basé dans le Berry, France</p>
+  </footer>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       LIGHTBOX (visionneuse plein écran — gérée par script.js)
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
+    <img src="" alt="" id="lightboxImg" />
+    <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
+    <div class="lightbox-info">
+      <h3 id="lightboxTitle"></h3>
+      <p  id="lightboxCat"></p>
+    </div>
+  </div>
+
+
+  <script src="script.js"></script>
+
+</body>
+</html>
