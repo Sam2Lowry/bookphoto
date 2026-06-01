@@ -240,7 +240,7 @@ nav.scrolled {
   inset:      0;
   transform:  scale(1.05);
   animation:  heroZoom 20s ease-out forwards;
-  background-image:    url('https://images.unsplash.com/photo-1549366021-9f761d450615?w=1800&q=85');
+  background-image:    url('images/portfolio/dscf6337.jpg');
   background-size:     cover;
   background-position: center;
   background-repeat:   no-repeat;
@@ -446,20 +446,36 @@ section {
 }
 
 .gallery-item {
-  break-inside: avoid;
+  break-inside:  avoid;
   margin-bottom: 1rem;
-  position:    relative;
-  overflow:    hidden;
-  cursor:      pointer;
+  max-height:    1200px;
+  position:      relative;
+  overflow:      hidden;
+  cursor:        pointer;
+  transition:    opacity 0.4s var(--ease), transform 0.4s var(--ease),
+                 max-height 0.5s var(--ease), margin-bottom 0.5s var(--ease);
 }
 
 .gallery-item img {
   width:      100%;
-  transition: transform 0.7s var(--ease);
   filter:     brightness(0.9) contrast(1.05);
+  transition: filter 0.8s var(--ease), transform 0.8s var(--ease);
 }
 
-.gallery-item:hover img {
+/* Blur-up : état de chargement initial */
+.gallery-item img.blur-up {
+  filter:    blur(12px) brightness(0.9) contrast(1.05);
+  transform: scale(1.06);
+}
+
+/* Blur-up : image chargée — retour à l'état normal */
+.gallery-item img.blur-up.loaded {
+  filter:    blur(0) brightness(0.9) contrast(1.05);
+  transform: scale(1);
+}
+
+/* Hover uniquement quand l'image est chargée */
+.gallery-item:hover img.loaded {
   transform: scale(1.04);
 }
 
@@ -502,13 +518,7 @@ section {
   margin-top:    0.2rem;
 }
 
-/* Photo filtrée masquée — animation fluide */
-.gallery-item {
-  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease),
-              max-height 0.5s var(--ease), margin-bottom 0.5s var(--ease);
-  max-height: 1200px;
-  overflow:   hidden;
-}
+/* .gallery-item : transition et max-height fusionnées dans le bloc principal ci-dessus */
 
 .gallery-item.hidden {
   opacity:       0;
@@ -596,6 +606,100 @@ section {
   left:      50%;
   transform: translateX(-50%);
   text-align: center;
+}
+
+/* Compteur ex: "3 / 11" */
+.lightbox-counter {
+  font-size:     clamp(0.55rem, 0.45vw, 0.65rem);
+  letter-spacing: 0.35em;
+  color:         var(--gris);
+  font-family:   var(--font-sans);
+  font-weight:   300;
+  margin-bottom: 0.6rem;
+  white-space:   nowrap;
+}
+
+/* Bouton plein écran */
+.lightbox-fullscreen {
+  position:   absolute;
+  top:        1.9rem;
+  right:      5rem;
+  background: rgba(0, 0, 0, 0.35);
+  border:     1px solid rgba(255, 255, 255, 0.1);
+  color:      var(--gris-clair);
+  width:      2.4rem;
+  height:     2.4rem;
+  border-radius: 2px;
+  cursor:     pointer;
+  display:    flex;
+  align-items:   center;
+  justify-content: center;
+  transition: color 0.3s, border-color 0.3s, background 0.3s;
+  z-index:    10;
+}
+
+.lightbox-fullscreen:hover {
+  color:        var(--or);
+  border-color: var(--or);
+  background:   rgba(201, 168, 76, 0.08);
+}
+
+.lightbox-fullscreen svg {
+  width:  1rem;
+  height: 1rem;
+}
+
+/* Fondu lors du changement de photo */
+#lightboxImg {
+  transition: opacity 0.25s ease;
+}
+
+/* ── SHIMMER + BLUR-UP (portrait À propos) ─────────────────── */
+
+/* Fond placeholder sombre pendant le chargement */
+.gallery-item,
+.about-image-wrap {
+  background: var(--fumee);
+}
+
+/* Animation shimmer — s'arrête quand img reçoit .loaded */
+.gallery-item:not(:has(img.loaded))::after,
+.about-image-wrap:not(:has(img.loaded))::after {
+  content:    '';
+  position:   absolute;
+  inset:      0;
+  background: linear-gradient(
+    90deg,
+    transparent       0%,
+    rgba(255,255,255,0.04) 50%,
+    transparent       100%
+  );
+  background-size: 300% 100%;
+  animation:  shimmer 1.6s ease-in-out infinite;
+  z-index:    0;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0%   { background-position:  150% 0; }
+  100% { background-position: -150% 0; }
+}
+
+/* Blur-up portrait about */
+.about-image-wrap img.blur-up {
+  filter:    blur(12px);
+  transform: scale(1.06);
+  transition: filter 0.9s var(--ease), transform 0.9s var(--ease);
+}
+
+.about-image-wrap img.blur-up.loaded {
+  filter:    blur(0);
+  transform: scale(1);
+}
+
+/* Masquer fullscreen sur mobile (API peu supportée) */
+@media (max-width: 900px) {
+  .lightbox-fullscreen { display: none; }
 }
 
 .lightbox-info h3 {
@@ -936,10 +1040,6 @@ footer span {
 
 /* ───────────────────────────────────────────────────────────────
    14. RESPONSIVE
-─────────────────────────────────────────────────────────────── */
-
-/* ───────────────────────────────────────────────────────────────
-   14. RESPONSIVE
    Breakpoints :
      ≥ 1800px  Ultra-wide (>27")
      ≥ 1400px  Large desktop
@@ -1152,6 +1252,12 @@ footer span {
   footer {
     padding: 1.2rem 1rem;
   }
+}
+
+/* ── Appareils tactiles : curseur custom inutile ─────────────── */
+@media (pointer: coarse) {
+  .cursor,
+  .cursor-ring { display: none; }
 }
 
 /* ── Accessibilité : respecter les préférences de mouvement ──── */

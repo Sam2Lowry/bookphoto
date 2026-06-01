@@ -1,17 +1,16 @@
 /* ================================================================
    SCRIPT.JS — Portfolio Photo Nature
    ----------------------------------------------------------------
-   Ce fichier gère uniquement les interactions utilisateur.
-   Tout le contenu est dans index.html, tout le style dans style.css.
-
    Sommaire :
      1. Année dynamique (footer)
      2. Curseur personnalisé
      3. Navbar au scroll
      4. Menu hamburger (mobile)
      5. Filtres de galerie
-     6. Lightbox
+     6. Lightbox (+ fullscreen + compteur)
      7. Révélation au scroll
+     8. Scrollspy (lien actif dans la nav)
+     9. Blur-up (chargement progressif des images)
 ================================================================ */
 
 
@@ -20,32 +19,42 @@
 document.getElementById('year').textContent = new Date().getFullYear();
 
 
+/* ── Préférence de mouvement réduit ────────────────────────── */
+/*    Partagée par le curseur, le reveal et le ring             */
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+
 /* ── 2. CURSEUR PERSONNALISÉ ────────────────────────────────── */
+/*    Désactivé sur appareils tactiles (pointer: coarse)         */
 
-/* Masquer le curseur natif et activer le curseur doré */
-document.body.classList.add('custom-cursor');
+if (!window.matchMedia('(pointer: coarse)').matches) {
 
-const cursor     = document.getElementById('cursor');
-const cursorRing = document.getElementById('cursorRing');
-let mouseX = 0, mouseY = 0;
-let ringX  = 0, ringY  = 0;
+  document.body.classList.add('custom-cursor');
 
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  cursor.style.left = mouseX + 'px';
-  cursor.style.top  = mouseY + 'px';
-});
+  const cursor     = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0;
+  let ringX  = 0, ringY  = 0;
 
-/* Le ring suit la souris avec un léger retard (effet inertie) */
-function animerRing() {
-  ringX += (mouseX - ringX) * 0.12;
-  ringY += (mouseY - ringY) * 0.12;
-  cursorRing.style.left = ringX + 'px';
-  cursorRing.style.top  = ringY + 'px';
-  requestAnimationFrame(animerRing);
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top  = mouseY + 'px';
+  });
+
+  function animerRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top  = ringY + 'px';
+    requestAnimationFrame(animerRing);
+  }
+
+  if (!reduceMotion) animerRing();
+
 }
-animerRing();
 
 
 /* ── 3. NAVBAR AU SCROLL ────────────────────────────────────── */
@@ -64,27 +73,26 @@ const navLinks  = document.getElementById('navLinks');
 
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('active');
-  navLinks.classList.toggle('open');
+  const isOpen = navLinks.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', isOpen);
 });
 
-/* Fermer le menu au clic sur un lien */
 navLinks.querySelectorAll('a').forEach(a => {
   a.addEventListener('click', () => {
     hamburger.classList.remove('active');
     navLinks.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
   });
 });
 
 
 /* ── 5. FILTRES DE GALERIE ──────────────────────────────────── */
 
-const filterBtns  = document.querySelectorAll('.filter-btn');
+const filterBtns   = document.querySelectorAll('.filter-btn');
 const galleryItems = document.querySelectorAll('.gallery-item');
 
 filterBtns.forEach(btn => {
   btn.addEventListener('click', () => {
-
-    /* Décocher tous, cocher le bouton cliqué */
     filterBtns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
@@ -100,42 +108,71 @@ filterBtns.forEach(btn => {
 
 /* ── 6. LIGHTBOX ────────────────────────────────────────────── */
 
-const lightbox      = document.getElementById('lightbox');
-const lightboxImg   = document.getElementById('lightboxImg');
-const lightboxTitle = document.getElementById('lightboxTitle');
-const lightboxCat   = document.getElementById('lightboxCat');
+const lightbox        = document.getElementById('lightbox');
+const lightboxImg     = document.getElementById('lightboxImg');
+const lightboxTitle   = document.getElementById('lightboxTitle');
+const lightboxCat     = document.getElementById('lightboxCat');
+const lightboxCounter = document.getElementById('lightboxCounter');
 
-let currentIdx = 0;
-let visibles   = [];
+let currentIdx   = 0;
+let visibles     = [];
+let dernierFocus = null;   /* Élément ayant le focus avant ouverture */
 
-/* Retourne les photos actuellement affichées (filtre actif) */
 function getVisibles() {
   return [...document.querySelectorAll('.gallery-item:not(.hidden)')];
 }
 
-/* Affiche la photo à l'index donné dans la lightbox */
+/* Mise à jour du compteur "3 / 11" */
+function mettreAJourCompteur() {
+  lightboxCounter.textContent = `${currentIdx + 1} / ${visibles.length}`;
+}
+
+/* Affichage avec préchargement et fondu */
 function afficherPhoto(idx) {
-  const item = visibles[idx];
-  lightboxImg.src          = item.querySelector('img').src;
-  lightboxImg.alt          = item.querySelector('img').alt;
+  const item  = visibles[idx];
+  const imgEl = item.querySelector('img');
+
+  /* Fondu sortant */
+  lightboxImg.style.opacity = '0';
+
+  /* Récupérer la pleine résolution (data-src si blur-up, sinon src) */
+  const newSrc = imgEl.dataset.src || imgEl.src;
+
+  /* Précharger avant d'afficher */
+  const preload = new Image();
+  preload.onload = () => {
+    lightboxImg.src = newSrc;
+    lightboxImg.alt = imgEl.alt;
+    lightboxImg.style.opacity = '1';
+  };
+  preload.src = newSrc;
+
   lightboxTitle.textContent = item.querySelector('h3').textContent;
   lightboxCat.textContent   = item.querySelector('p').textContent;
+  mettreAJourCompteur();
 }
 
 function ouvrirLightbox(idx) {
-  visibles   = getVisibles();
-  currentIdx = idx;
+  dernierFocus = document.activeElement;   /* Mémoriser pour restauration */
+  visibles     = getVisibles();
+  currentIdx   = idx;
   afficherPhoto(currentIdx);
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
+  /* Déplacer le focus sur le bouton Fermer (accessibilité) */
+  document.getElementById('lightboxClose').focus();
 }
 
 function fermerLightbox() {
   lightbox.classList.remove('active');
   document.body.style.overflow = '';
+  /* Quitter le plein écran si actif */
+  if (document.fullscreenElement) document.exitFullscreen();
+  /* Restaurer le focus sur l'élément déclencheur */
+  if (dernierFocus) dernierFocus.focus();
 }
 
-/* Ouverture au clic sur une photo */
+/* Ouverture au clic */
 galleryItems.forEach(item => {
   item.addEventListener('click', () => {
     ouvrirLightbox(getVisibles().indexOf(item));
@@ -162,13 +199,12 @@ document.getElementById('lightboxNext').addEventListener('click', () => {
 /* Navigation clavier */
 document.addEventListener('keydown', e => {
   if (!lightbox.classList.contains('active')) return;
-
   if (e.key === 'Escape')     fermerLightbox();
   if (e.key === 'ArrowLeft')  { currentIdx = (currentIdx - 1 + visibles.length) % visibles.length; afficherPhoto(currentIdx); }
   if (e.key === 'ArrowRight') { currentIdx = (currentIdx + 1) % visibles.length; afficherPhoto(currentIdx); }
 });
 
-/* Navigation tactile (swipe gauche / droite) */
+/* Navigation tactile (swipe) */
 let touchStartX = 0;
 
 lightbox.addEventListener('touchstart', e => {
@@ -177,7 +213,7 @@ lightbox.addEventListener('touchstart', e => {
 
 lightbox.addEventListener('touchend', e => {
   const delta = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(delta) < 40) return; /* trop court = tap, pas swipe */
+  if (Math.abs(delta) < 40) return;
   if (delta < 0) {
     currentIdx = (currentIdx + 1) % visibles.length;
   } else {
@@ -187,9 +223,65 @@ lightbox.addEventListener('touchend', e => {
 });
 
 
-/* ── 8. LIEN DE NAVIGATION ACTIF AU SCROLL (scrollspy) ──────── */
+/* ── 6b. FULLSCREEN LIGHTBOX ────────────────────────────────── */
 
-const sections  = document.querySelectorAll('section[id]');
+const lightboxFullscreen = document.getElementById('lightboxFullscreen');
+
+const iconeExpand = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+  <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+  <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+  <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+</svg>`;
+
+const iconeCompress = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 3v3a2 2 0 0 1-2 2H3"/>
+  <path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
+  <path d="M3 16h3a2 2 0 0 1 2 2v3"/>
+  <path d="M16 21v-3a2 2 0 0 1 2-2h3"/>
+</svg>`;
+
+lightboxFullscreen.innerHTML = iconeExpand;
+
+lightboxFullscreen.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    lightbox.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen();
+  }
+});
+
+document.addEventListener('fullscreenchange', () => {
+  if (document.fullscreenElement) {
+    lightboxFullscreen.innerHTML = iconeCompress;
+    lightboxFullscreen.setAttribute('aria-label', 'Quitter le plein écran');
+  } else {
+    lightboxFullscreen.innerHTML = iconeExpand;
+    lightboxFullscreen.setAttribute('aria-label', 'Plein écran');
+  }
+});
+
+
+/* ── 7. RÉVÉLATION AU SCROLL ────────────────────────────────── */
+
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const delay = reduceMotion ? 0 : i * 80;
+        setTimeout(() => entry.target.classList.add('visible'), delay);
+      }
+    });
+  },
+  { threshold: 0.12 }
+);
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+
+/* ── 8. SCROLLSPY ───────────────────────────────────────────── */
+
+const sections   = document.querySelectorAll('section[id]');
 const navAnchors = document.querySelectorAll('.nav-links a');
 
 const spyObserver = new IntersectionObserver(
@@ -202,24 +294,46 @@ const spyObserver = new IntersectionObserver(
       });
     });
   },
-  { rootMargin: '-40% 0px -55% 0px' } /* déclenche quand la section est au centre */
+  { rootMargin: '-20% 0px -50% 0px' }
 );
 
 sections.forEach(s => spyObserver.observe(s));
 
 
-/* ── 7. RÉVÉLATION AU SCROLL ────────────────────────────────── */
+/* ── 9. BLUR-UP (chargement progressif) ─────────────────────── */
+/*
+   Principe :
+   - src      = placeholder transparent → affichage immédiat, shimmer CSS visible
+   - data-src = pleine résolution → chargée en arrière-plan via IntersectionObserver
+   - Quand la pleine résolution est prête : swap src + classe .loaded → défloutage CSS
+   - Pour des transitions encore plus douces : fournissez une version 30px wide dans
+     images/thumbs/ et utilisez src="images/thumbs/ma-photo.jpg" à la place du placeholder.
+*/
 
-const observer = new IntersectionObserver(
+const blurUpObserver = new IntersectionObserver(
   (entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        /* Léger décalage en cascade pour les éléments groupés */
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-      }
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      const img     = entry.target;
+      const fullSrc = img.dataset.src;
+      if (!fullSrc) return;
+
+      const preload = new Image();
+      preload.onload = () => {
+        img.src = fullSrc;
+        img.classList.add('loaded');
+      };
+      preload.onerror = () => {
+        /* En cas d'erreur : rendre l'image visible quand même */
+        img.classList.add('loaded');
+      };
+      preload.src = fullSrc;
+
+      blurUpObserver.unobserve(img);
     });
   },
-  { threshold: 0.12 }
+  { rootMargin: '200px 0px' } /* Précharge 200px avant l'entrée dans le viewport */
 );
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+document.querySelectorAll('img.blur-up').forEach(img => blurUpObserver.observe(img));

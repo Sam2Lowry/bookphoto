@@ -6,7 +6,13 @@
   <title>Berry Nice — Photographie Animalière & Urbaine</title>
   <meta name="description" content="Portfolio de photographie animalière et urbaine basé dans le Berry. Capturer l'essence du silence et des moments spontanés dans la nature et la ville." />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <meta property="og:title"       content="Berry Nice — Photographie Animalière &amp; Urbaine" />
+  <meta property="og:description" content="Portfolio de photographie animalière et urbaine basé dans le Berry." />
+  <meta property="og:image"       content="images/portfolio/dscf6337.jpg" />
+  <meta property="og:type"        content="website" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23c9a84c'/><circle cx='50' cy='50' r='20' fill='none' stroke='%230a0a08' stroke-width='8'/></svg>" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@200;300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
@@ -34,7 +40,7 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
 
-    <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu">
+    <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="navLinks">
       <span></span>
       <span></span>
       <span></span>
@@ -88,25 +94,29 @@
       <button class="filter-btn active" data-filter="all">Tout</button>
       <button class="filter-btn"        data-filter="animalier">Animalier</button>
       <button class="filter-btn"        data-filter="route">Sur la route</button>
-       <button class="filter-btn"        data-filter="paysages">Paysages</button>
+      <button class="filter-btn"        data-filter="paysages">Paysages</button>
     </div>
 
     <div class="gallery-grid reveal">
 
       <div class="gallery-item" data-cat="animalier">
-        <img src="images/portfolio/_dsf5564.jpg"
-             alt="Chat curieux" loading="lazy" />
+        <img class="blur-up"
+                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                  data-src="images/portfolio/_dsf5564.jpg"
+                  alt="Chat curieux" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
             <h3>Chat curieux</h3>
-            <p>Animalier · Jardin communaux</p>
+            <p>Animalier · Jardins communaux</p>
           </div>
         </div>
       </div>
 
       <div class="gallery-item" data-cat="paysages">
-        <img src="images/portfolio/_dsf5524.jpg"
-             alt="Aube sur l'étang communal" loading="lazy" />
+        <img class="blur-up"
+                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                  data-src="images/portfolio/_dsf5524.jpg"
+                  alt="Aube sur l'étang communal" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
             <h3>Aube dorée</h3>
@@ -116,8 +126,10 @@
       </div>
 
       <div class="gallery-item" data-cat="animalier">
-        <img src="images/portfolio/_dsf6623.jpg"
-             alt="Oiseau solitaire" loading="lazy" />
+        <img class="blur-up"
+                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                  data-src="images/portfolio/_dsf6623.jpg"
+                  alt="Oiseau solitaire" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
             <h3>Petit oiseau solitaire en hiver</h3>
@@ -127,8 +139,10 @@
       </div>
 
       <div class="gallery-item" data-cat="animalier">
-        <img src="images/portfolio/_dsf6703.jpg"
-             alt="Mésange à la mangeoire" loading="lazy" />
+        <img class="blur-up"
+                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                  data-src="images/portfolio/_dsf6703.jpg"
+                  alt="Mésange à la mangeoire" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
             <h3>Petite mésange vigilante</h3>
@@ -137,20 +151,24 @@
         </div>
       </div>
 
-      <div class="gallery-item" data-cat="Route">
-        <img src="images/portfolio/_dsf5933.jpg"
-             alt="Chateauneuf-sur-cher" loading="lazy" />
+      <div class="gallery-item" data-cat="route">
+        <img class="blur-up"
+                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                  data-src="images/portfolio/_dsf5933.jpg"
+                  alt="Chateauneuf-sur-cher" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
-            <h3>Canal du cher</h3>
-            <p>Route · Chateauneuf-sur-cher</p>
+            <h3>Canal du Cher</h3>
+            <p>Sur la route · Châteauneuf-sur-Cher</p>
           </div>
         </div>
       </div>
 
       <div class="gallery-item" data-cat="animalier">
-        <img src="images/portfolio/_dsf5576.jpg"
-             alt="Vol migratoire" loading="lazy" />
+        <img class="blur-up"
+                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                  data-src="images/portfolio/_dsf5576.jpg"
+                  alt="Vol migratoire" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
             <h3>Ciel d'hiver et migration</h3>
@@ -160,73 +178,86 @@
       </div>
 
       <div class="gallery-item" data-cat="animalier">
-        <img src="images/portfolio/_dsf5693.jpg"
-             alt="Papillon et romarin" loading="lazy" />
+        <img class="blur-up"
+                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                  data-src="images/portfolio/_dsf5693.jpg"
+                  alt="Papillon et romarin" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
             <h3>Papillon et romarin</h3>
-            <p>Animalier · Jardin au Printemps</p>
+            <p>Animalier · Jardin au printemps</p>
           </div>
         </div>
       </div>
 
       <div class="gallery-item" data-cat="animalier">
-        <img src="images/portfolio/_dsf5622.jpg"
-             alt="Couple de cygne en hiver" loading="lazy" />
+        <img class="blur-up"
+                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                  data-src="images/portfolio/_dsf5622.jpg"
+                  alt="Couple de cygnes en hiver" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
-            <h3>Couple de cygne en hiver</h3>
-            <p>Animalier · Etang communal</p>
+            <h3>Couple de cygnes en hiver</h3>
+            <p>Animalier · Étang communal</p>
           </div>
         </div>
       </div>
 
       <div class="gallery-item" data-cat="paysages">
-        <img src="images/portfolio/_dsf5519.jpg"
-             alt="Etang à l'aurore" loading="lazy" />
+        <img class="blur-up"
+                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                  data-src="images/portfolio/_dsf5519.jpg"
+                  alt="Étang à l'aurore" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
-            <h3>Etang à l'aurore</h3>
+            <h3>Étang à l'aurore</h3>
             <p>Paysages · Berry</p>
           </div>
         </div>
       </div>
 
       <div class="gallery-item" data-cat="paysages">
-        <img src="images/portfolio/_dsf5731.jpg"
-             alt="Landes en fleur" loading="lazy" />
+        <img class="blur-up"
+                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                  data-src="images/portfolio/_dsf5731.jpg"
+                  alt="Étang au petit matin" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
-            <h3>Etang au petit matin</h3>
+            <h3>Étang au petit matin</h3>
             <p>Paysages · Berry</p>
           </div>
         </div>
       </div>
 
       <div class="gallery-item" data-cat="route">
-        <img src="images/portfolio/dscf6349.jpg"
-             alt="Route déserte" loading="lazy" />
+        <img class="blur-up"
+                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                  data-src="images/portfolio/dscf6349.jpg"
+                  alt="Route déserte" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
             <h3>Voyage électrique</h3>
-            <p>Route · Indre</p>
+            <p>Sur la route · Indre</p>
           </div>
         </div>
       </div>
-      
-          <div class="gallery-item" data-cat="route">
-        <img src="images/portfolio/dscf6337.jpg"
-             alt="Route et brouillard" loading="lazy" />
+
+      <div class="gallery-item" data-cat="route">
+        <img class="blur-up"
+                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                  data-src="images/portfolio/dscf6337.jpg"
+                  alt="Route et brouillard" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
             <h3>Voyage d'hiver</h3>
-            <p>Route · Berry</p>
+            <p>Sur la route · Berry</p>
           </div>
         </div>
       </div>
+
       <!-- ─ Modèle pour ajouter une photo ─────────────────────────
       <div class="gallery-item" data-cat="animalier">
-        <img src="images/ma-photo.jpg" alt="Description de la photo" loading="lazy" />
+        <img src="images/portfolio/ma-photo.jpg" alt="Description de la photo" loading="lazy" />
         <div class="gallery-overlay">
           <div class="gallery-caption">
             <h3>Titre de la photo</h3>
@@ -235,6 +266,7 @@
         </div>
       </div>
       ──────────────────────────────────────────────────────────── -->
+
 
     </div><!-- fin .gallery-grid -->
 
@@ -248,8 +280,11 @@
   <section id="apropos">
 
     <div class="about-image-wrap reveal">
-      <img src="images/portfolio/Robin.jpeg"
-           alt="Berry Nice, photographe" />
+      <img class="blur-up"
+           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+           data-src="images/portfolio/Robin.jpeg"
+           alt="Berry Nice, photographe"
+           loading="lazy" />
     </div>
 
     <div class="about-text">
@@ -352,7 +387,7 @@
       </div>
 
       <p class="contact-tagline reveal">
-        « Se perdre dans endroits<br>qui invitent à la fiction. »
+        « Se perdre dans des endroits<br>qui invitent à la fiction. »
       </p>
 
       <p class="contact-text reveal">
@@ -364,10 +399,6 @@
       <div class="contact-links reveal">
         <a href="mailto:berrynice.bookphoto@gmail.com" class="btn btn-primary">✉ Envoyer un message</a>
         <a href="https://www.instagram.com/berrynice.bookphoto/" target="_blank" rel="noopener" class="btn btn-outline">Instagram</a>
-      </div>
-
-      <div class="social-links reveal">
-        <a href="https://www.instagram.com/berrynice.bookphoto/" target="_blank" rel="noopener">Instagram</a>
       </div>
 
     </div>
@@ -386,12 +417,24 @@
   <!-- ═══════════════════════════════════════════════════════════
        LIGHTBOX (visionneuse plein écran — gérée par script.js)
   ═══════════════════════════════════════════════════════════ -->
-  <div class="lightbox" id="lightbox">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Visionneuse de photos">
     <button class="lightbox-close" id="lightboxClose">✕</button>
+
+    <button class="lightbox-fullscreen" id="lightboxFullscreen" aria-label="Plein écran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+        <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+        <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+        <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+      </svg>
+    </button>
+
     <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
     <img src="" alt="" id="lightboxImg" />
     <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
+
     <div class="lightbox-info">
+      <div class="lightbox-counter" id="lightboxCounter">1 / 11</div>
       <h3 id="lightboxTitle"></h3>
       <p  id="lightboxCat"></p>
     </div>
