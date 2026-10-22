@@ -8,13 +8,14 @@
 
   <meta property="og:title"       content="Berry Nice — Photographie Animalière &amp; Urbaine" />
   <meta property="og:description" content="Portfolio de photographie animalière et urbaine basé dans le Berry." />
-  <meta property="og:image"       content="images/portfolio/dscf6337.jpg" />
+  <meta property="og:image"       content="https://sam2lowry.github.io/bookphoto/images/portfolio/_dsf5564.jpg" />
   <meta property="og:type"        content="website" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23c9a84c'/><circle cx='50' cy='50' r='20' fill='none' stroke='%230a0a08' stroke-width='8'/></svg>" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="images/portfolio/dscf6337.jpg" fetchpriority="high" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -48,6 +49,7 @@
 
   </nav>
 
+  <main>
 
   <!-- ═══════════════════════════════════════════════════════════
        HERO
@@ -65,8 +67,10 @@
         <em>du silence et<br>de l'instant</em>
       </h1>
       <p class="hero-sub">
-        Chercher un avant et un après — dans la nature à l'affût,
-        ou dans la rue au fil de l'impulsion.
+        <blockquote>  [...] de cette minute d'erreur 
+        il me reste le sentiment d'avoir ravi à l'inconnu quelque chose de réel.<br>
+        Je crois à des conjurations spontanées.</blockquote>
+        <i>Antonin Artaud</i>, <g>L'Ombilic des Limbes</g>
       </p>
     </div>
 
@@ -74,14 +78,6 @@
 
   </section>
 
-
-  <!-- ═══════════════════════════════════════════════════════════
-       GALERIE
-       ─ data-cat="animalier" ou data-cat="urbain" → sert aux filtres
-       ─ Ajoutez une photo : copiez un bloc <div class="gallery-item">
-       ─ Supprimez une photo : effacez son bloc entier
-       ─ Remplacez les src Unsplash par vos propres chemins : "images/ma-photo.jpg"
-  ═══════════════════════════════════════════════════════════ -->
   <section id="galerie">
 
     <div class="section-header reveal">
@@ -91,182 +87,16 @@
     </div>
 
     <div class="gallery-filters reveal">
-      <button class="filter-btn active" data-filter="all">Tout</button>
-      <button class="filter-btn"        data-filter="animalier">Animalier</button>
-      <button class="filter-btn"        data-filter="route">Sur la route</button>
-      <button class="filter-btn"        data-filter="paysages">Paysages</button>
+      <button class="filter-btn active" data-filter="all"       aria-pressed="true">Tout</button>
+      <button class="filter-btn"        data-filter="animalier" aria-pressed="false">Animalier</button>
+      <button class="filter-btn"        data-filter="route"     aria-pressed="false">Sur la route</button>
+      <button class="filter-btn"        data-filter="paysages"  aria-pressed="false">Paysages</button>
     </div>
 
     <div class="gallery-grid reveal">
 
-      <div class="gallery-item" data-cat="animalier">
-        <img class="blur-up"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-src="images/portfolio/_dsf5564.jpg"
-                  alt="Chat curieux" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Chat curieux</h3>
-            <p>Animalier · Jardins communaux</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-cat="paysages">
-        <img class="blur-up"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-src="images/portfolio/_dsf5524.jpg"
-                  alt="Aube sur l'étang communal" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Aube dorée</h3>
-            <p>Paysages matinaux · Berry</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-cat="animalier">
-        <img class="blur-up"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-src="images/portfolio/_dsf6623.jpg"
-                  alt="Oiseau solitaire" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Petit oiseau solitaire en hiver</h3>
-            <p>Jardin en hiver · Berry</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-cat="animalier">
-        <img class="blur-up"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-src="images/portfolio/_dsf6703.jpg"
-                  alt="Mésange à la mangeoire" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Petite mésange vigilante</h3>
-            <p>Animalier · Jardin au printemps</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-cat="route">
-        <img class="blur-up"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-src="images/portfolio/_dsf5933.jpg"
-                  alt="Chateauneuf-sur-cher" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Canal du Cher</h3>
-            <p>Sur la route · Châteauneuf-sur-Cher</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-cat="animalier">
-        <img class="blur-up"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-src="images/portfolio/_dsf5576.jpg"
-                  alt="Vol migratoire" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Ciel d'hiver et migration</h3>
-            <p>Animalier · Berry</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-cat="animalier">
-        <img class="blur-up"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-src="images/portfolio/_dsf5693.jpg"
-                  alt="Papillon et romarin" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Papillon et romarin</h3>
-            <p>Animalier · Jardin au printemps</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-cat="animalier">
-        <img class="blur-up"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-src="images/portfolio/_dsf5622.jpg"
-                  alt="Couple de cygnes en hiver" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Couple de cygnes en hiver</h3>
-            <p>Animalier · Étang communal</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-cat="paysages">
-        <img class="blur-up"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-src="images/portfolio/_dsf5519.jpg"
-                  alt="Étang à l'aurore" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Étang à l'aurore</h3>
-            <p>Paysages · Berry</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-cat="paysages">
-        <img class="blur-up"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-src="images/portfolio/_dsf5731.jpg"
-                  alt="Étang au petit matin" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Étang au petit matin</h3>
-            <p>Paysages · Berry</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-cat="route">
-        <img class="blur-up"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-src="images/portfolio/dscf6349.jpg"
-                  alt="Route déserte" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Voyage électrique</h3>
-            <p>Sur la route · Indre</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="gallery-item" data-cat="route">
-        <img class="blur-up"
-                  src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                  data-src="images/portfolio/dscf6337.jpg"
-                  alt="Route et brouillard" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Voyage d'hiver</h3>
-            <p>Sur la route · Berry</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- ─ Modèle pour ajouter une photo ─────────────────────────
-      <div class="gallery-item" data-cat="animalier">
-        <img src="images/portfolio/ma-photo.jpg" alt="Description de la photo" loading="lazy" />
-        <div class="gallery-overlay">
-          <div class="gallery-caption">
-            <h3>Titre de la photo</h3>
-            <p>Animalier · Lieu de prise de vue</p>
-          </div>
-        </div>
-      </div>
-      ──────────────────────────────────────────────────────────── -->
-
+      <!-- Les photos sont générées par script.js à partir de photos.js.
+           Pour ajouter / modifier / retirer une photo : éditez photos.js -->
 
     </div><!-- fin .gallery-grid -->
 
@@ -295,22 +125,22 @@
       </div>
 
       <p class="reveal">
-        Depuis mes première photographies, je cherche dans mes prises
-        de vue un instant précis où une image capture une sensation durable qui puisse faire naître une émotion qui résonne.
+        Depuis mes premières photographies, je cherche dans mes photos
+        un instant précis, une image qui capture une sensation durable qui puisse continuer à résonner dans le temps.
       </p>
 
       <p class="reveal">
-        Mon regard se partage entre deux univers complémentaires :
+        Mon travail se partage entre deux univers complémentaires qui se font face :
         la <strong>photographie animalière</strong>, faite de patience
         et d'observation silencieuse au cœur de la nature, et la
         <strong>photographie urbaine</strong>, où la recherche d'un instant prime
-        et où chaque ruelle recèle ses propres silences, sa propre histoire.
+        et où chaque chemins, passages et ruelles révèlent sa propre histoire.
       
       </p>
 
       <p class="reveal">
-        Basé dans le <strong>Berry</strong>, je travaille au fil d'une lumière qui évolue au fil des saisons, des moments précieux 
-        où se croisent migrations saisonnières, déplacements imprévus ou voyages à travers des paysages en changements constants.
+        Basé dans le <strong>Berry</strong>, je recherche une lumière qui évolue au fil des saisons, de ces moments précieux 
+        où se croisent migrations saisonnières, déplacements imprévus ou voyages à travers des paysages changeants et fragiles.
       </p>
 
       <div class="about-stats reveal">
@@ -350,8 +180,8 @@
       <div class="gear-item">
         <span class="gear-icon">📷</span>
         <span class="gear-cat">Hybride principal</span>
-        <p class="gear-name">Fujifilm X-T5</p>
-        <p class="gear-desc">40 MP, capteur APS-C — Rendu magnifique malgré un auto-focus qui se perd un peu</p>
+        <p class="gear-name">Nikon Z5 II</p>
+        <p class="gear-desc">Nouveau boitier, nouveau challenge en full frame</p>
       </div>
 
       <div class="gear-item">
@@ -371,13 +201,7 @@
     </div>
 
   </section>
-
-
-  <!-- ═══════════════════════════════════════════════════════════
-       CONTACT
-       ─ Remplacez contact@berry-nice.fr par votre vraie adresse
-       ─ Remplacez le lien Instagram par votre URL de profil
-  ═══════════════════════════════════════════════════════════ -->
+  
   <section id="contact">
     <div class="contact-inner">
 
@@ -391,18 +215,20 @@
       </p>
 
       <p class="contact-text reveal">
-        Basé dans le Berry — disponible pour des collaborations éditoriales,
-        des projets associatifs ou simplement pour échanger
+        Disponible pour des collaborations éditoriales,
+        des projets associatifs ou simplement pour <em>échanger</em>
         autour de la photographie.
       </p>
 
       <div class="contact-links reveal">
         <a href="mailto:berrynice.bookphoto@gmail.com" class="btn btn-primary">✉ Envoyer un message</a>
-        <a href="https://www.instagram.com/berrynice.bookphoto/" target="_blank" rel="noopener" class="btn btn-outline">Instagram</a>
+        <a href="https://www.instagram.com/berrynice.bookphoto" target="_blank" rel="noopener" class="btn btn-outline">Instagram</a>
       </div>
 
     </div>
   </section>
+
+  </main>
 
 
   <!-- ═══════════════════════════════════════════════════════════
@@ -434,13 +260,14 @@
     <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
 
     <div class="lightbox-info">
-      <div class="lightbox-counter" id="lightboxCounter">1 / 11</div>
+      <div class="lightbox-counter" id="lightboxCounter">1 / 12</div>
       <h3 id="lightboxTitle"></h3>
       <p  id="lightboxCat"></p>
     </div>
   </div>
 
 
+  <script src="photos.js"></script>
   <script src="script.js"></script>
 
 </body>

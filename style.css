@@ -41,7 +41,7 @@
   --fumee:       #2a2a27;
   --creme:       #f0ead8;
   --blanc:       #faf8f3;
-  --gris:        #6b6b62;
+  --gris:        #8f8f86;   /* éclairci depuis #6b6b62 : contraste insuffisant (~3,2–3,7:1) sur fonds sombres */
   --gris-clair:  #9b9b90;
 
   /* Typographie */
@@ -58,6 +58,9 @@
 
   /* Gouttières horizontales adaptatives */
   --gutter: clamp(1.5rem, 5vw, 6rem);
+
+  /* Hauteur approximative de la nav (état "scrolled") — sert au scroll-margin-top */
+  --nav-height: 90px;
 }
 
 html {
@@ -100,26 +103,32 @@ h1, h2, h3 {
 
 .cursor {
   position:   fixed;
+  top:        0;
+  left:       0;
   width:      8px;
   height:     8px;
   background: var(--or);
   border-radius: 50%;
   pointer-events: none;
   z-index:    9999;
-  transform:  translate(-50%, -50%);
+  transform:  translate(-50%, -50%); /* position réelle ajoutée en JS via transform */
   transition: width 0.3s, height 0.3s, opacity 0.3s;
+  will-change: transform;
 }
 
 .cursor-ring {
   position:   fixed;
+  top:        0;
+  left:       0;
   width:      36px;
   height:     36px;
   border:     1px solid rgba(201, 168, 76, 0.4);
   border-radius: 50%;
   pointer-events: none;
   z-index:    9998;
-  transform:  translate(-50%, -50%);
+  transform:  translate(-50%, -50%); /* position réelle ajoutée en JS via transform */
   transition: all 0.12s ease;
+  will-change: transform;
 }
 
 
@@ -351,6 +360,10 @@ section {
   padding: 7rem var(--gutter);
 }
 
+section[id] {
+  scroll-margin-top: var(--nav-height);
+}
+
 /* Conteneurs intérieurs centrés pour ultra-wide */
 .section-header,
 .gallery-filters,
@@ -457,9 +470,12 @@ section {
 }
 
 .gallery-item img {
-  width:      100%;
-  filter:     brightness(0.9) contrast(1.05);
-  transition: filter 0.8s var(--ease), transform 0.8s var(--ease);
+  width:        100%;
+  aspect-ratio: 3 / 2;  /* estimation par défaut ; script.js applique le vrai ratio de
+                            chaque photo dès qu'elle est chargée (voir section 9) */
+  object-fit:   cover;
+  filter:       brightness(0.9) contrast(1.05);
+  transition:   filter 0.8s var(--ease), transform 0.8s var(--ease);
 }
 
 /* Blur-up : état de chargement initial */
@@ -1148,6 +1164,14 @@ footer span {
     grid-template-columns: 1fr 1fr;
   }
 
+  /* Sur 2 colonnes, le 3e stat se retrouvait seul à gauche avec un
+     vide disgracieux à sa droite : on l'étale sur toute la largeur
+     et on le centre. (Annulé plus bas dès qu'on repasse à 1 colonne.) */
+  .about-stats > div:last-child {
+    grid-column: span 2;
+    text-align:  center;
+  }
+
   /* Footer */
   footer {
     flex-direction: column;
@@ -1241,6 +1265,13 @@ footer span {
   .about-stats {
     grid-template-columns: 1fr;
     gap:                   1.5rem;
+  }
+
+  /* On annule le span/centrage de la grille à 2 colonnes : en 1
+     colonne, les 3 stats doivent rester alignées de la même façon */
+  .about-stats > div:last-child {
+    grid-column: auto;
+    text-align:  left;
   }
 
   /* Gear : 1 colonne explicite */
