@@ -87,10 +87,30 @@
     </div>
 
     <div class="gallery-filters reveal">
-      <button class="filter-btn active" data-filter="all"       aria-pressed="true">Tout</button>
-      <button class="filter-btn"        data-filter="animalier" aria-pressed="false">Animalier</button>
-      <button class="filter-btn"        data-filter="route"     aria-pressed="false">Sur la route</button>
-      <button class="filter-btn"        data-filter="paysages"  aria-pressed="false">Paysages</button>
+
+      <div class="filter-group" role="group" aria-label="Thème">
+        <button class="filter-btn active" data-group="cat" data-filter="all"       aria-pressed="true">Tout</button>
+        <button class="filter-btn"        data-group="cat" data-filter="animalier" aria-pressed="false">Animalier</button>
+        <button class="filter-btn"        data-group="cat" data-filter="route"     aria-pressed="false">Sur la route</button>
+        <button class="filter-btn"        data-group="cat" data-filter="paysages"  aria-pressed="false">Paysages</button>
+      </div>
+
+      <div class="filter-group filter-group--secondary" role="group" aria-label="Format">
+        <span class="filter-label" aria-hidden="true">Format</span>
+        <button class="filter-btn active" data-group="ratio" data-filter="all"      aria-pressed="true">Tous</button>
+        <button class="filter-btn"        data-group="ratio" data-filter="paysage"  aria-pressed="false">Paysage</button>
+        <button class="filter-btn"        data-group="ratio" data-filter="portrait" aria-pressed="false">Portrait</button>
+        <button class="filter-btn"        data-group="ratio" data-filter="carre"    aria-pressed="false">Carré</button>
+        <button class="filter-btn"        data-group="ratio" data-filter="panorama" aria-pressed="false">Panoramique</button>
+      </div>
+
+      <div class="filter-group filter-group--secondary" role="group" aria-label="Teinte">
+        <span class="filter-label" aria-hidden="true">Teinte</span>
+        <button class="filter-btn active" data-group="teinte" data-filter="all"     aria-pressed="true">Toutes</button>
+        <button class="filter-btn"        data-group="teinte" data-filter="couleur" aria-pressed="false">Couleur</button>
+        <button class="filter-btn"        data-group="teinte" data-filter="nb"      aria-pressed="false">Noir &amp; blanc</button>
+      </div>
+
     </div>
 
     <div class="gallery-grid reveal">
@@ -99,6 +119,8 @@
            Pour ajouter / modifier / retirer une photo : éditez photos.js -->
 
     </div><!-- fin .gallery-grid -->
+
+    <p class="gallery-empty" id="galleryEmpty" hidden>Aucune photo ne correspond à cette sélection.</p>
 
   </section>
 

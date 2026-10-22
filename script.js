@@ -7,7 +7,7 @@
      2. Curseur personnalisé
      3. Navbar au scroll
      4. Menu hamburger (mobile)
-     5. Filtres de galerie
+     5. Filtres de galerie (thème / format / teinte)
      6. Lightbox (+ fullscreen + compteur)
      7. Révélation au scroll
      8. Scrollspy (lien actif dans la nav)
@@ -33,6 +33,8 @@ try {
     const item = document.createElement('div');
     item.className   = 'gallery-item';
     item.dataset.cat = p.cat;
+    if (p.ratio)   item.dataset.ratio  = p.ratio;     /* sinon détecté (section 5) */
+    if (p.couleur) item.dataset.teinte = p.couleur;   /* sinon détecté (section 5) */
 
     const img = document.createElement('img');
     img.className   = 'blur-up';
@@ -83,6 +85,18 @@ try {
 /*    Partagée par le curseur, le reveal et le ring             */
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+
+/* ── Classement d'une photo par format ─────────────────────── */
+/*    Rapport largeur / hauteur : 3:2 → 1,5 · 4:3 → 1,33 · 1:1 → 1 */
+
+function classerRatio(largeur, hauteur) {
+  const r = largeur / hauteur;
+  if (r >= 1.9)  return 'panorama';
+  if (r >  1.15) return 'paysage';
+  if (r >= 0.87) return 'carre';
+  return 'portrait';
+}
 
 
 /* ── 2. CURSEUR PERSONNALISÉ ────────────────────────────────── */
@@ -168,26 +182,96 @@ try {
 
 
 /* ── 5. FILTRES DE GALERIE ──────────────────────────────────── */
+/*    Trois filtres combinables : thème, format, teinte.          */
+/*    Format et teinte sont lus dans photos.js s'ils y sont       */
+/*    renseignés ; sinon ils sont détectés en chargeant l'image   */
+/*    (une seule fois, au premier clic sur l'un de ces filtres).  */
 
 try {
   const filterBtns   = document.querySelectorAll('.filter-btn');
-  const galleryItems = document.querySelectorAll('.gallery-item');
+  const galleryItems = [...document.querySelectorAll('.gallery-item')];
+  const vide         = document.getElementById('galleryEmpty');
+  const etat         = { cat: 'all', ratio: 'all', teinte: 'all' };
+  let canvasBloque   = false;
+
+  /* Couleur ou N&B : l'image est réduite à 48 px de large, puis on mesure
+     l'écart moyen entre les canaux R/V/B. Un écart quasi nul partout
+     = noir & blanc. Renvoie null si le canvas est bloqué par le navigateur
+     (ouverture du site en file:// — fonctionne sur un vrai serveur). */
+  function detecterTeinte(img) {
+    try {
+      const W = 48;
+      const H = Math.max(1, Math.round(W * img.naturalHeight / img.naturalWidth));
+      const canvas = document.createElement('canvas');
+      canvas.width = W; canvas.height = H;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, 0, 0, W, H);
+      const px = ctx.getImageData(0, 0, W, H).data;
+      let somme = 0, colores = 0;
+      for (let i = 0; i < px.length; i += 4) {
+        const ecart = Math.max(px[i], px[i+1], px[i+2]) - Math.min(px[i], px[i+1], px[i+2]);
+        somme += ecart;
+        if (ecart > 30) colores++;
+      }
+      const n = px.length / 4;
+      return (somme / n < 10 && colores / n < 0.03) ? 'nb' : 'couleur';
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /* Renseigne data-ratio / data-teinte si absents */
+  function analyserItem(item) {
+    if (item.dataset.ratio && item.dataset.teinte) return Promise.resolve();
+    return new Promise(resolve => {
+      const im = new Image();
+      im.onload = () => {
+        if (!item.dataset.ratio) {
+          item.dataset.ratio = classerRatio(im.naturalWidth, im.naturalHeight);
+        }
+        if (!item.dataset.teinte) {
+          const t = detecterTeinte(im);
+          if (!t && !canvasBloque) {
+            canvasBloque = true;
+            console.warn('Détection N&B impossible (canvas bloqué). Testez via un serveur local, ou ajoutez couleur: "nb" / "couleur" dans photos.js.');
+          }
+          item.dataset.teinte = t || 'couleur';
+        }
+        resolve();
+      };
+      im.onerror = resolve;
+      im.src = item.querySelector('img').dataset.src;
+    });
+  }
+
+  function appliquer() {
+    let visibles = 0;
+    galleryItems.forEach(item => {
+      const ok = Object.keys(etat).every(g => etat[g] === 'all' || item.dataset[g] === etat[g]);
+      item.classList.toggle('hidden', !ok);
+      if (ok) visibles++;
+    });
+    if (vide) vide.hidden = visibles > 0;
+  }
 
   filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => {
+    btn.addEventListener('click', async () => {
+      const groupe = btn.dataset.group;
+
+      document.querySelectorAll(`.filter-btn[data-group="${groupe}"]`).forEach(b => {
         b.classList.remove('active');
         b.setAttribute('aria-pressed', 'false');
       });
       btn.classList.add('active');
       btn.setAttribute('aria-pressed', 'true');
 
-      const filtre = btn.dataset.filter;
+      etat[groupe] = btn.dataset.filter;
 
-      galleryItems.forEach(item => {
-        const masquer = filtre !== 'all' && item.dataset.cat !== filtre;
-        item.classList.toggle('hidden', masquer);
-      });
+      /* Format / teinte : s'assurer que toutes les photos sont analysées */
+      if (groupe !== 'cat' && etat[groupe] !== 'all') {
+        await Promise.all(galleryItems.map(analyserItem));
+      }
+      appliquer();
     });
   });
 } catch (err) {
@@ -467,6 +551,8 @@ try {
         preload.onload = () => {
           if (img.closest('.gallery-item')) {
             img.style.aspectRatio = `${preload.naturalWidth} / ${preload.naturalHeight}`;
+            const it = img.closest('.gallery-item');
+            if (!it.dataset.ratio) it.dataset.ratio = classerRatio(preload.naturalWidth, preload.naturalHeight);
           }
           img.src = fullSrc;
           img.classList.add('loaded');

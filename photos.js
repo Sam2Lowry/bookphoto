@@ -21,6 +21,11 @@
                  .filter-btn avec le même data-filter dans index.html)
      alt      → description pour l'accessibilité (optionnel : si absent,
                 le titre est utilisé)
+     ratio    → (optionnel) "paysage", "portrait", "carre" ou "panorama".
+                Détecté automatiquement si absent.
+     couleur  → (optionnel) "couleur" ou "nb". Détecté automatiquement si
+                absent ; à renseigner pour forcer un cas particulier
+                (ex. photo virée sépia ou très désaturée).
 
    L'ordre de la liste = l'ordre d'affichage dans la galerie.
 ================================================================ */

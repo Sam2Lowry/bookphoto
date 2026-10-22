@@ -424,12 +424,30 @@ section[id] {
   background: var(--charbon);
 }
 
-/* Boutons de filtre */
+/* Filtres : thème (ligne principale), puis format et teinte (secondaires) */
 .gallery-filters {
   display:       flex;
-  gap:           0.5rem;
-  margin-bottom: 3rem;
   flex-wrap:     wrap;
+  align-items:   center;
+  gap:           1.25rem 3rem;
+  margin-bottom: 3rem;
+}
+
+.filter-group {
+  display:     flex;
+  align-items: center;
+  flex-wrap:   wrap;
+  gap:         0.5rem;
+}
+
+.filter-group:first-child { flex-basis: 100%; }
+
+.filter-label {
+  font-family:  var(--font-serif);
+  font-style:   italic;
+  font-size:    1.1rem;
+  color:        var(--gris-clair);
+  margin-right: 0.5rem;
 }
 
 .filter-btn {
@@ -445,11 +463,31 @@ section[id] {
   transition:    all 0.3s;
 }
 
+.filter-group--secondary .filter-btn {
+  padding:   0.35rem 1rem;
+  font-size: clamp(0.6rem, 0.5vw, 0.75rem);
+}
+
 .filter-btn:hover,
 .filter-btn.active {
   background:  var(--or);
   border-color: var(--or);
   color:       var(--noir);
+}
+
+.filter-btn:focus-visible {
+  outline:        1px solid var(--or);
+  outline-offset: 3px;
+}
+
+/* Message quand la combinaison de filtres ne renvoie aucune photo */
+.gallery-empty {
+  font-family: var(--font-serif);
+  font-style:  italic;
+  font-size:   1.3rem;
+  color:       var(--gris-clair);
+  text-align:  center;
+  padding:     3rem 0;
 }
 
 /* Grille masonry */
