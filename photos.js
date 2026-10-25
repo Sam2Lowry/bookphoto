@@ -26,6 +26,11 @@
      couleur  → (optionnel) "couleur" ou "nb". Détecté automatiquement si
                 absent ; à renseigner pour forcer un cas particulier
                 (ex. photo virée sépia ou très désaturée).
+     largeur / hauteur → (optionnel) dimensions de l'image en pixels, ex.
+                largeur: 3000, hauteur: 2000. Sinon elles sont lues
+                automatiquement dans le fichier au chargement du site
+                (JPEG, PNG, WebP). Les indiquer ici rend la mise en page
+                instantanée, sans aucune requête supplémentaire.
 
    L'ordre de la liste = l'ordre d'affichage dans la galerie.
 ================================================================ */
@@ -141,7 +146,6 @@ const PHOTOS = [
     titre:   "Nuance d'automne",
     legende: "Paysages - Berry",
     cat:     "paysages",
-    alt:     "Route et brouillard",
   },
    {
     fichier: "DSC_1242.jpg",
@@ -155,7 +159,7 @@ const PHOTOS = [
     titre:   "Eol",
     legende: "Sur la route - Berry",
     cat:     "route",
-    alt:     "Eoliennes",
+    alt:     "Éoliennes",
   },
   // ▼▼ AJOUTEZ VOS NOUVELLES PHOTOS AU-DESSUS DE CETTE LIGNE ▼▼
 

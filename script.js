@@ -35,6 +35,12 @@ try {
     item.dataset.cat = p.cat;
     if (p.ratio)   item.dataset.ratio  = p.ratio;     /* sinon détecté (section 5) */
     if (p.couleur) item.dataset.teinte = p.couleur;   /* sinon détecté (section 5) */
+    item.dataset.id = p.fichier.replace(/\.[^.]+$/, '').toLowerCase();   /* pour les liens #photo-… */
+    if (p.largeur && p.hauteur) {
+      appliquerDimensions(item, p.largeur, p.hauteur);            /* indiquées dans photos.js */
+    } else {                                                       /* sinon lues dans l'en-tête du fichier */
+      lireDimensions(DOSSIER_PHOTOS + p.fichier).then(d => { if (d) appliquerDimensions(item, d.l, d.h); });
+    }
 
     const img = document.createElement('img');
     img.className   = 'blur-up';
@@ -42,6 +48,7 @@ try {
     img.dataset.src = DOSSIER_PHOTOS + p.fichier;
     img.alt         = p.alt || p.titre;
     img.loading     = 'lazy';
+    img.decoding    = 'async';
 
     const overlay = document.createElement('div');
     overlay.className = 'gallery-overlay';
@@ -89,6 +96,109 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 
 /* ── Classement d'une photo par format ─────────────────────── */
 /*    Rapport largeur / hauteur : 3:2 → 1,5 · 4:3 → 1,33 · 1:1 → 1 */
+
+/* ── Dimensions d'une photo ────────────────────────────────── */
+
+/* Applique les dimensions : la grille réserve la bonne place (--ar)
+   et le format (paysage / portrait…) est connu sans autre chargement. */
+function appliquerDimensions(item, largeur, hauteur) {
+  item.style.setProperty('--ar', (largeur / hauteur).toFixed(4));
+  if (!item.dataset.ratio) item.dataset.ratio = classerRatio(largeur, hauteur);
+}
+
+/* Orientation EXIF d'un JPEG (t = début de l'en-tête TIFF). 1 = normal ;
+   5 à 8 = photo couchée, dont le navigateur échange largeur et hauteur. */
+function orientationExif(b, t) {
+  const pb  = b[t] === 0x49;                         /* « II » : petit-boutiste, « MM » : grand-boutiste */
+  const u16 = o => pb ? (b[o] | b[o+1] << 8) : (b[o] << 8 | b[o+1]);
+  const u32 = o => pb ? ((b[o] | b[o+1] << 8 | b[o+2] << 16 | b[o+3] << 24) >>> 0)
+                      : ((b[o] << 24 | b[o+1] << 16 | b[o+2] << 8 | b[o+3]) >>> 0);
+  const ifd = t + u32(t + 4);
+  for (let k = 0, nb = u16(ifd); k < nb; k++) {
+    const e = ifd + 2 + 12 * k;
+    if (u16(e) === 0x0112) return u16(e + 8);
+  }
+  return 1;
+}
+
+/* Lit largeur / hauteur dans l'en-tête d'un fichier JPEG, PNG ou WebP :
+   les premiers octets suffisent, pas besoin de décoder l'image.
+   Renvoie null tant que l'en-tête est incomplet, ou si le format est inconnu. */
+function dimensionsImage(b) {
+  const n   = b.length;
+  const u32 = o => ((b[o] << 24) | (b[o+1] << 16) | (b[o+2] << 8) | b[o+3]) >>> 0;
+
+  if (b[0] === 0xFF && b[1] === 0xD8) {                                    /* JPEG */
+    let i = 2, orientation = 1;
+    while (i + 9 <= n) {
+      if (b[i] !== 0xFF) return null;
+      const m = b[i + 1];
+      if (m === 0xFF) { i++; continue; }                                   /* octet de remplissage */
+      if (m >= 0xC0 && m <= 0xCF && m !== 0xC4 && m !== 0xC8 && m !== 0xCC) {
+        const h = (b[i+5] << 8) | b[i+6], l = (b[i+7] << 8) | b[i+8];
+        return orientation >= 5 ? { l: h, h: l } : { l, h };
+      }
+      const len = (b[i+2] << 8) | b[i+3];
+      if (m === 0xE1 && b[i+4] === 0x45 && b[i+5] === 0x78) {              /* segment « Exif » */
+        if (i + 2 + len > n) return null;                                  /* pas encore reçu en entier */
+        orientation = orientationExif(b, i + 10);
+      }
+      i += 2 + len;
+    }
+    return null;
+  }
+
+  if (b[0] === 0x89 && b[1] === 0x50 && n >= 24) {                         /* PNG */
+    return { l: u32(16), h: u32(20) };
+  }
+
+  if (b[0] === 0x52 && b[8] === 0x57 && n >= 30) {                         /* WebP */
+    const type = String.fromCharCode(b[12], b[13], b[14], b[15]);
+    if (type === 'VP8 ') return { l: (b[26] | b[27] << 8) & 0x3FFF, h: (b[28] | b[29] << 8) & 0x3FFF };
+    if (type === 'VP8L') {
+      const v = (b[21] | b[22] << 8 | b[23] << 16 | b[24] << 24) >>> 0;
+      return { l: (v & 0x3FFF) + 1, h: ((v >>> 14) & 0x3FFF) + 1 };
+    }
+    if (type === 'VP8X') return { l: 1 + (b[24] | b[25] << 8 | b[26] << 16), h: 1 + (b[27] | b[28] << 8 | b[29] << 16) };
+  }
+
+  return null;
+}
+
+/* Télécharge seulement le début du fichier (quelques Ko, interrompu dès que
+   l'en-tête est lu) pour connaître le ratio AVANT le chargement de l'image :
+   la grille ne se réorganise plus pendant que les photos arrivent.
+   Renvoie null en cas d'échec (AVIF, file://, hors ligne…) : la grille
+   s'ajuste alors au chargement de l'image, comme avant. */
+async function lireDimensions(url) {
+  const stop = new AbortController();
+  try {
+    const rep = await fetch(url, { headers: { Range: 'bytes=0-262143' }, signal: stop.signal });
+    if (!rep.ok || !rep.body) return null;
+    const lecteur = rep.body.getReader();
+    let tampon = new Uint8Array(0), dim = null;
+    while (!dim && tampon.length < 262144) {
+      const { done, value } = await lecteur.read();
+      if (done) break;
+      const plus = new Uint8Array(tampon.length + value.length);
+      plus.set(tampon);
+      plus.set(value, tampon.length);
+      tampon = plus;
+      dim = dimensionsImage(tampon);
+    }
+    return dim;
+  } catch (e) {
+    return null;
+  } finally {
+    stop.abort();
+  }
+}
+
+/* Met à jour l'adresse (#photo-…) sans jamais bloquer le site :
+   certains navigateurs refusent history.replaceState en file:// */
+function majAdresse(hash) {
+  try { history.replaceState(null, '', hash); } catch (e) { /* sans importance */ }
+}
 
 function classerRatio(largeur, hauteur) {
   const r = largeur / hauteur;
@@ -248,7 +358,13 @@ try {
     let visibles = 0;
     galleryItems.forEach(item => {
       const ok = Object.keys(etat).every(g => etat[g] === 'all' || item.dataset[g] === etat[g]);
+      const etaitCache = item.classList.contains('hidden');
       item.classList.toggle('hidden', !ok);
+      if (ok && etaitCache) {            /* fondu d'apparition (annulé si mouvement réduit) */
+        item.classList.remove('apparait');
+        void item.offsetWidth;
+        item.classList.add('apparait');
+      }
       if (ok) visibles++;
     });
     if (vide) vide.hidden = visibles > 0;
@@ -325,6 +441,13 @@ try {
     lightboxTitle.textContent = item.querySelector('h3').textContent;
     lightboxCat.textContent   = item.querySelector('p').textContent;
     mettreAJourCompteur();
+
+    /* Lien direct vers cette photo (adresse partageable) */
+    majAdresse(`#photo-${item.dataset.id}`);
+
+    /* Précharger la photo suivante : navigation instantanée */
+    const suivante = visibles[(idx + 1) % visibles.length].querySelector('img');
+    new Image().src = suivante.dataset.src || suivante.src;
   }
 
   function ouvrirLightbox(idx) {
@@ -340,6 +463,7 @@ try {
 
   function fermerLightbox() {
     lightbox.classList.remove('active');
+    majAdresse('#galerie');
     document.body.style.overflow = '';
     /* Quitter le plein écran si actif */
     if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
@@ -468,6 +592,13 @@ try {
     }
   });
 
+  /* Ouverture directe depuis un lien du type …/#photo-dsf5564 */
+  const lien = location.hash.match(/^#photo-(.+)$/);
+  if (lien) {
+    const cible = [...galleryItems].find(i => i.dataset.id === decodeURIComponent(lien[1]).toLowerCase());
+    if (cible) ouvrirLightbox(getVisibles().indexOf(cible));
+  }
+
 } catch (err) {
   console.error('Erreur — lightbox :', err);
 }
@@ -476,6 +607,8 @@ try {
 /* ── 7. RÉVÉLATION AU SCROLL ────────────────────────────────── */
 
 try {
+  if (!reduceMotion) document.documentElement.classList.add('reveal-on');
+
   const revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry, i) => {
@@ -486,7 +619,7 @@ try {
         }
       });
     },
-    { threshold: 0.12 }
+    { threshold: 0, rootMargin: '0px 0px -8% 0px' }   /* indépendant de la hauteur de l'élément */
   );
 
   document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
@@ -531,7 +664,7 @@ try {
    - Pour les photos de la galerie (.gallery-item), le ratio réel de l'image
      (naturalWidth / naturalHeight) est appliqué dès qu'elle est chargée, afin de
      réserver la bonne hauteur et limiter les décalages de mise en page (CLS).
-     Le ratio par défaut avant chargement est fixé dans le CSS (.gallery-item img).
+     Le ratio par défaut avant chargement (--ar) est fixé dans le CSS (.gallery-item).
      Le portrait de la section "À propos" garde volontairement son ratio fixe
      (3/4) défini en CSS, puisqu'il s'agit d'un cadrage choisi, pas d'une photo
      de galerie au format variable.
@@ -550,9 +683,8 @@ try {
         const preload = new Image();
         preload.onload = () => {
           if (img.closest('.gallery-item')) {
-            img.style.aspectRatio = `${preload.naturalWidth} / ${preload.naturalHeight}`;
             const it = img.closest('.gallery-item');
-            if (!it.dataset.ratio) it.dataset.ratio = classerRatio(preload.naturalWidth, preload.naturalHeight);
+            appliquerDimensions(it, preload.naturalWidth, preload.naturalHeight);
           }
           img.src = fullSrc;
           img.classList.add('loaded');
