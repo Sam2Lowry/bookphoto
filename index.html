@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0a08" />   <!-- barre du navigateur mobile : même noir que le site -->
+  <meta name="color-scheme" content="dark" />      <!-- fond sombre dès le chargement (pas d'éclair blanc), barres de défilement sombres -->
   <title>Berry Nice — Photographie Animalière, Paysages &amp; Routes</title>
   <meta name="description" content="Portfolio de photographie animalière, de paysages et de routes, basé dans le Berry. Capturer l'essence du silence et des moments spontanés, dans la nature comme au bord des chemins." />
 
@@ -16,14 +18,18 @@
   <link rel="canonical" href="https://sam2lowry.github.io/bookphoto/" />
   <noscript><style>.gallery-filters { display: none; }</style></noscript>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23c9a84c'/><circle cx='50' cy='50' r='20' fill='none' stroke='%230a0a08' stroke-width='8'/></svg>" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <!-- Polices hébergées (voir style.css, section 0) : préchargement des 3 plus visibles à l'écran d'accueil -->
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/cormorant-garamond-latin-300-normal.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/cormorant-garamond-latin-300-italic.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/raleway-latin-300-normal.woff2" />
   <link rel="preload" as="image" href="images/portfolio/dscf6337.jpg" fetchpriority="high" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
 
   <!-- ═══════════════════════════════════════════════════════════
        CURSEUR PERSONNALISÉ
@@ -54,7 +60,7 @@
 
   </nav>
 
-  <main>
+  <main id="contenu" tabindex="-1">
 
   <!-- ═══════════════════════════════════════════════════════════
        HERO
@@ -95,27 +101,34 @@
 
     <div class="gallery-filters reveal">
 
-      <div class="filter-group" role="group" aria-label="Thème">
+      <div class="filter-group" role="group" aria-label="Filtres">
         <button type="button" class="filter-btn active" data-group="cat" data-filter="all"       aria-pressed="true">Tout</button>
         <button type="button" class="filter-btn"        data-group="cat" data-filter="animalier" aria-pressed="false">Animalier</button>
         <button type="button" class="filter-btn"        data-group="cat" data-filter="route"     aria-pressed="false">Sur la route</button>
         <button type="button" class="filter-btn"        data-group="cat" data-filter="paysages"  aria-pressed="false">Paysages</button>
+        <button type="button" class="filter-toggle" id="filterToggle" aria-expanded="false" aria-controls="filterPanel">
+          Affiner <span class="filter-count" id="filterCount" hidden></span>
+        </button>
       </div>
 
-      <div class="filter-group filter-group--secondary" role="group" aria-label="Format">
-        <span class="filter-label" aria-hidden="true">Format</span>
-        <button type="button" class="filter-btn active" data-group="ratio" data-filter="all"      aria-pressed="true">Tous</button>
-        <button type="button" class="filter-btn"        data-group="ratio" data-filter="paysage"  aria-pressed="false">Paysage</button>
-        <button type="button" class="filter-btn"        data-group="ratio" data-filter="portrait" aria-pressed="false">Portrait</button>
-        <button type="button" class="filter-btn"        data-group="ratio" data-filter="carre"    aria-pressed="false">Carré</button>
-        <button type="button" class="filter-btn"        data-group="ratio" data-filter="panorama" aria-pressed="false">Panoramique</button>
-      </div>
+      <div class="filter-panel" id="filterPanel">
 
-      <div class="filter-group filter-group--secondary" role="group" aria-label="Teinte">
-        <span class="filter-label" aria-hidden="true">Teinte</span>
-        <button type="button" class="filter-btn active" data-group="teinte" data-filter="all"     aria-pressed="true">Toutes</button>
-        <button type="button" class="filter-btn"        data-group="teinte" data-filter="couleur" aria-pressed="false">Couleur</button>
-        <button type="button" class="filter-btn"        data-group="teinte" data-filter="nb"      aria-pressed="false">Noir &amp; blanc</button>
+          <div class="filter-group filter-group--secondary" role="group" aria-label="Format">
+          <span class="filter-label" aria-hidden="true">Format</span>
+          <button type="button" class="filter-btn active" data-group="ratio" data-filter="all"      aria-pressed="true">Tous</button>
+          <button type="button" class="filter-btn"        data-group="ratio" data-filter="paysage"  aria-pressed="false">Paysage</button>
+          <button type="button" class="filter-btn"        data-group="ratio" data-filter="portrait" aria-pressed="false">Portrait</button>
+          <button type="button" class="filter-btn"        data-group="ratio" data-filter="carre"    aria-pressed="false">Carré</button>
+          <button type="button" class="filter-btn"        data-group="ratio" data-filter="panorama" aria-pressed="false">Panoramique</button>
+        </div>
+
+        <div class="filter-group filter-group--secondary" role="group" aria-label="Teinte">
+          <span class="filter-label" aria-hidden="true">Teinte</span>
+          <button type="button" class="filter-btn active" data-group="teinte" data-filter="all"     aria-pressed="true">Toutes</button>
+          <button type="button" class="filter-btn"        data-group="teinte" data-filter="couleur" aria-pressed="false">Couleur</button>
+          <button type="button" class="filter-btn"        data-group="teinte" data-filter="nb"      aria-pressed="false">Noir &amp; blanc</button>
+        </div>
+
       </div>
 
     </div>
@@ -127,7 +140,10 @@
 
     </div><!-- fin .gallery-grid -->
 
-    <p class="gallery-empty" id="galleryEmpty" hidden>Aucune photo ne correspond à cette sélection.</p>
+    <div class="gallery-empty" id="galleryEmpty" hidden>
+      <p>Aucune photo ne correspond à cette sélection.</p>
+      <button type="button" class="filter-btn" id="filterReset">Réinitialiser les filtres</button>
+    </div>
 
     <!-- noscript-galerie:début — copie statique de photos.js (visiteurs sans JS, moteurs de recherche) -->
     <noscript>
@@ -184,30 +200,30 @@
       <p class="reveal">
         Mon travail se partage entre deux univers complémentaires qui se font face :
         la <strong>photographie animalière</strong>, faite de patience
-        et d'observation silencieuse au cœur de la nature, et une
-        <strong>photographie de l'errance, sur la route</strong>, où la recherche d'un instant prime
-        et où chaque chemin
+        et d'observation silencieuse au cœur de la nature, et la
+        <strong>photographie sur la route</strong>, où la recherche d'un instant prime
+        et où chaque chemin, passage et ruelle
         révèle sa propre histoire.
       
       </p>
 
       <p class="reveal">
-        Basé dans le <strong>Berry</strong>depuis peu, je tente de travailler une lumière qui évolue au fil des saisons, de ces moments précieux 
+        Basé dans le <strong>Berry</strong>, je recherche une lumière qui évolue au fil des saisons, de ces moments précieux 
         où se croisent migrations saisonnières, déplacements imprévus ou voyages à travers des paysages changeants et fragiles.
       </p>
 
       <div class="about-stats reveal">
         <div>
+          <span class="stat-label">Une</span>
           <span class="stat-val">Envie</span>
-          <span class="stat-label">Une</span>
         </div>
         <div>
+          <span class="stat-label">Une</span>
           <span class="stat-val">Passion</span>
-          <span class="stat-label">Une</span>
         </div>
         <div>
-          <span class="stat-val">Apprendre</span>
           <span class="stat-label">Toujours</span>
+          <span class="stat-val">Apprendre</span>
         </div>
       </div>
 
@@ -231,21 +247,21 @@
     <div class="gear-grid reveal">
 
       <div class="gear-item">
-        <span class="gear-icon">📷</span>
+        <svg class="gear-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 8h2.6l1.3-2h8.2l1.3 2H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.2" r="3.7"/></svg>
         <span class="gear-cat">Hybride principal</span>
         <p class="gear-name">Nikon Z5 II</p>
         <p class="gear-desc">Nouveau boîtier, nouveau challenge en full frame</p>
       </div>
 
       <div class="gear-item">
-        <span class="gear-icon">📱</span>
+        <svg class="gear-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="7" y="2.8" width="10" height="18.4" rx="2.4"/><path d="M10.6 18.4h2.8"/></svg>
         <span class="gear-cat">Toujours dans la poche</span>
         <p class="gear-name">Google Pixel 8 Pro</p>
         <p class="gear-desc">Discret, instantané, bluffant en basse lumière — un tout-terrain qui tient dans la poche.</p>
       </div>
 
       <div class="gear-item">
-        <span class="gear-icon">👁</span>
+        <svg class="gear-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.9"/></svg>
         <span class="gear-cat">Références</span>
         <p class="gear-name">Todd Hido · Sabine Weiss</p>
         <p class="gear-desc">On se forme autant devant les maîtres que derrière l'objectif. Deux regards qui ont donné forme au mieux.</p>
@@ -264,7 +280,7 @@
       </div>
 
       <p class="contact-tagline reveal">
-        « Se perdre dans des endroits<br>qui invitent à la fiction. »
+        «&nbsp;Se perdre dans des endroits qui invitent à la fiction.&nbsp;»
       </p>
 
       <p class="contact-text reveal">
@@ -289,7 +305,8 @@
   ═══════════════════════════════════════════════════════════ -->
   <footer>
     <p>© <span id="year"></span> Berry Nice — Tous droits réservés</p>
-    <p>Quelque part dans le Berry, France</p>
+    <p><a href="mentions-legales.html">Mentions légales</a></p>
+    <p>Basé dans le Berry, France</p>
   </footer>
 
 
@@ -316,11 +333,13 @@
       <div class="lightbox-counter" id="lightboxCounter">1 / 12</div>
       <h3 id="lightboxTitle"></h3>
       <p  id="lightboxCat"></p>
+      <p  class="lightbox-exif" id="lightboxExif" hidden></p>   <!-- appareil · focale · ouverture · vitesse · ISO (photos-exif.js) -->
     </div>
   </div>
 
 
   <script src="photos.js"></script>
+  <script src="photos-exif.js"></script>
   <script src="script.js"></script>
 
 </body>

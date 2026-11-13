@@ -30,7 +30,17 @@
                 largeur: 3000, hauteur: 2000. Sinon elles sont lues
                 automatiquement dans le fichier au chargement du site
                 (JPEG, PNG, WebP). Les indiquer ici rend la mise en page
-                instantanée, sans aucune requête supplémentaire.
+                instantanée, sans requête au chargement (les infos de prise
+                de vue sont alors lues à l'ouverture de la photo).
+     exif     → (optionnel) infos de prise de vue affichées sous le titre dans
+                la visionneuse. Lues automatiquement par le navigateur dans le
+                fichier JPEG de chaque photo (rien à lancer) : appareil, focale,
+                ouverture, vitesse, ISO. Si l'export de la photo a retiré ses
+                métadonnées, il n'y a rien à lire : renseignez alors ce champ.
+                Un champ écrit ici est prioritaire sur le fichier ; un champ
+                vide ("") est masqué. Ex :
+                exif: { appareil: "Nikon Z5 II", focale: 35, ouverture: 5.6,
+                        vitesse: "1/250", iso: 400 }
 
    L'ordre de la liste = l'ordre d'affichage dans la galerie.
 ================================================================ */

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#0a0a08" />
+  <meta name="color-scheme" content="dark" />
+  <title>Page introuvable — Berry Nice</title>
+
+  <!-- GitHub Pages affiche cette page pour TOUTE adresse inconnue, même dans un sous-dossier
+       (…/bookphoto/a/b/c) : <base> force donc le chargement des fichiers depuis la racine du site.
+       Si tu passes sur un nom de domaine à la racine (https://mondomaine.fr), remplace par  <base href="/" />  -->
+  <base href="/bookphoto/" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23c9a84c'/><circle cx='50' cy='50' r='20' fill='none' stroke='%230a0a08' stroke-width='8'/></svg>" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/cormorant-garamond-latin-300-normal.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/cormorant-garamond-latin-300-italic.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/raleway-latin-300-normal.woff2" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="cursor"      id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <nav id="navbar">
+
+    <a href="index.html" class="nav-logo">Berry<span>.</span>Nice</a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#galerie">Galerie</a></li>
+      <li><a href="index.html#apropos">À propos</a></li>
+      <li><a href="index.html#equipement">Équipement</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+
+    <button type="button" class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </nav>
+
+  <main id="contenu" tabindex="-1">
+
+    <section class="erreur">
+      <div>
+        <p class="erreur-code" aria-hidden="true">4<em>0</em>4</p>
+        <h1 class="section-title">Cette page est restée <em>hors champ</em></h1>
+        <p class="erreur-texte">
+          L'adresse demandée n'existe pas, ou elle a changé. Le portfolio, lui, est toujours là.
+        </p>
+        <a href="index.html" class="btn btn-primary">Revenir au portfolio</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Berry Nice — Tous droits réservés</p>
+    <p><a href="mentions-legales.html">Mentions légales</a></p>
+    <p>Basé dans le Berry, France</p>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
